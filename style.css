@@ -228,7 +228,7 @@ body {
   color: var(--text);
 }
 
-/* Верхняя часть: иконка + название + мета справа от иконки */
+/* Верхняя часть: иконка + название + вертикальный блок версии/размера справа */
 .modal-top {
   display: flex;
   align-items: center;
@@ -255,10 +255,11 @@ body {
   line-height: 1.2;
 }
 
-/* Компактный блок версии и размера — без контейнера, просто текст с иконками */
+/* Вертикальный компактный блок версии и размера */
 .meta-block {
   display: flex;
-  gap: 16px;
+  flex-direction: column;
+  gap: 6px;
   font-size: 13px;
   color: var(--text-sec);
 }
@@ -266,14 +267,13 @@ body {
 .meta-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
-.meta-item .meta-icon {
-  width: 14px;
-  height: 14px;
-  stroke: var(--accent);
-  flex-shrink: 0;
+.meta-label {
+  color: var(--text-sec);
+  font-weight: 500;
+  min-width: 50px;
 }
 
 .meta-value {
