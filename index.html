@@ -13,7 +13,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
-
   <header class="header">
     <div class="header-content">
       <div class="logo">IPAWorld App</div>
@@ -21,7 +20,7 @@
   </header>
 
   <main class="main-content">
-    <!-- Поисковая строка (только для вкладки Search) -->
+    <!-- Поисковая строка (показывается только на вкладке Search) -->
     <div id="searchContainer" class="search-container" style="display: none;">
       <input type="text" id="searchInput" placeholder="Поиск по названию..." class="search-input">
     </div>
@@ -36,7 +35,6 @@
     <div class="modal-content">
       <span class="close-modal" id="closeModal">×</span>
 
-      <!-- Верхняя часть: иконка + название + версия/размер справа от иконки -->
       <div class="modal-top">
         <img id="modalIcon" src="" alt="Иконка" class="modal-icon">
         <div class="modal-title-section">
@@ -55,12 +53,10 @@
       </div>
 
       <div class="modal-body">
-        <!-- Блок функций -->
         <div class="features-block">
           <p id="modalFeatures"></p>
         </div>
 
-        <!-- Предупреждение о сертификате -->
         <div class="cert-warning">
           <div class="warning-icon">⚠️</div>
           <div class="warning-text">
