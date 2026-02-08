@@ -1,7 +1,4 @@
-/* ========================================= */
-/* Reset и базовые переменные               */
-/* ========================================= */
-
+/* Reset и переменные */
 * {
   margin: 0;
   padding: 0;
@@ -9,14 +6,14 @@
 }
 
 :root {
-  --bg-start:    #0f1d3a;          /* тёмный синий сверху */
-  --bg-end:      #3b82f6;          /* насыщенный голубой снизу */
-  --accent:      #60a5fa;          /* светло-голубой для акцентов и кнопок */
+  --bg-start:    #0f1d3a;
+  --bg-end:      #3b82f6;
+  --accent:      #60a5fa;
   --accent-dark: #2563eb;
-  --card-bg:     rgba(30, 58, 138, 0.65);   /* полупрозрачный тёмно-голубой */
-  --text:        #f0f9ff;          /* почти белый с лёгким голубым оттенком */
-  --text-sec:    #bfdbfe;          /* вторичный текст */
-  --header-bg:   rgba(15, 23, 55, 0.88);    /* тёмная шапка */
+  --card-bg:     rgba(30, 58, 138, 0.65);
+  --text:        #f0f9ff;
+  --text-sec:    #bfdbfe;
+  --header-bg:   rgba(15, 23, 55, 0.88);
   --border:      rgba(96, 165, 250, 0.18);
   --radius:      20px;
   --blur:        blur(16px);
@@ -34,10 +31,7 @@ body {
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
-/* ========================================= */
-/* Шапка — высота 56px + safe-area           */
-/* ========================================= */
-
+/* Шапка */
 .header {
   position: fixed;
   top: 0;
@@ -68,10 +62,7 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* ========================================= */
-/* Основной контент                          */
-/* ========================================= */
-
+/* Контент */
 .main-content {
   padding-top: calc(72px + env(safe-area-inset-top));
   padding-left: 16px;
@@ -81,10 +72,94 @@ body {
   max-width: 480px;
 }
 
-/* ========================================= */
-/* Нижняя навигация (bottom tab bar)         */
-/* ========================================= */
+/* Список приложений */
+.app-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0;
+}
 
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-sec);
+  font-size: 17px;
+}
+
+/* Карточка */
+.app-card {
+  background: var(--card-bg);
+  backdrop-filter: var(--blur);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: 1px solid var(--border);
+}
+
+.app-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.app-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  object-fit: cover;
+  background: #334155;
+}
+
+.app-info {
+  flex: 1;
+}
+
+.app-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.app-category {
+  font-size: 13px;
+  color: var(--text-sec);
+  margin-bottom: 4px;
+}
+
+.app-features {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.btn-install {
+  display: block;
+  background: var(--accent);
+  color: #0f172a;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  margin-top: 12px;
+  transition: var(--transition);
+}
+
+.btn-install:hover {
+  background: var(--accent-dark);
+  transform: scale(1.04);
+}
+
+/* Нижняя панель */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -111,8 +186,6 @@ body {
   text-decoration: none;
   font-size: 10px;
   font-weight: 500;
-  letter-spacing: -0.2px;
-  transition: var(--transition);
   width: 25%;
 }
 
@@ -133,14 +206,11 @@ body {
   width: 28px;
   height: 28px;
   margin-bottom: 4px;
-  filter: brightness(0) invert(0.9);  /* светлые иконки по умолчанию */
+  filter: brightness(0) invert(0.9);
   transition: var(--transition);
 }
 
-/* ========================================= */
-/* Адаптивность                              */
-/* ========================================= */
-
+/* Адаптив */
 @media (min-width: 768px) {
   .main-content {
     max-width: 720px;
