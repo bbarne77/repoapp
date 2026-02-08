@@ -50,7 +50,7 @@ function loadData() {
         return;
       }
 
-      // По умолчанию показываем Apps
+      // По умолчанию показываем вкладку Apps
       renderList('apps');
     })
     .catch(error => {
@@ -107,7 +107,10 @@ function openModal(itemId, category) {
   document.getElementById('modalSize').textContent = item.размер || '—';
   document.getElementById('modalDownloadBtn').href = item.download_url || '#';
 
+  modal.classList.remove('closing');
   modal.style.display = 'flex';
+  // Даём браузеру отрисовать display, потом добавляем класс анимации
+  setTimeout(() => modal.classList.add('show'), 10);
 }
 
 // ================== События ==================
@@ -119,9 +122,23 @@ appList.addEventListener('click', e => {
   }
 });
 
-closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
+// Закрытие модалки с анимацией
+closeModalBtn.addEventListener('click', () => {
+  modal.classList.add('closing');
+  setTimeout(() => {
+    modal.style.display = 'none';
+    modal.classList.remove('closing');
+  }, 400); // синхронно с длительностью анимации
+});
+
 window.addEventListener('click', e => {
-  if (e.target === modal) modal.style.display = 'none';
+  if (e.target === modal) {
+    modal.classList.add('closing');
+    setTimeout(() => {
+      modal.style.display = 'none';
+      modal.classList.remove('closing');
+    }, 400);
+  }
 });
 
 // Переключение вкладок
