@@ -35,20 +35,22 @@
   <div id="appModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" id="closeModal">×</span>
-      <div class="modal-header">
-        <img id="modalIcon" src="" alt="Иконка" class="modal-icon">
-        <h2 id="modalTitle"></h2>
-      </div>
 
-      <!-- Аккуратный блок с версией и размером под названием -->
-      <div class="meta-block">
-        <div class="meta-item">
-          <span class="meta-label">Версия</span>
-          <span id="modalVersion" class="meta-value"></span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Размер</span>
-          <span id="modalSize" class="meta-value"></span>
+      <!-- Верхняя часть: иконка + название + версия/размер справа от иконки -->
+      <div class="modal-top">
+        <img id="modalIcon" src="" alt="Иконка" class="modal-icon">
+        <div class="modal-title-section">
+          <h2 id="modalTitle"></h2>
+          <div class="meta-block">
+            <div class="meta-item">
+              <span class="meta-label">Версия</span>
+              <span id="modalVersion" class="meta-value"></span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Размер</span>
+              <span id="modalSize" class="meta-value"></span>
+            </div>
+          </div>
         </div>
       </div>
 
