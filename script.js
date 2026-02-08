@@ -23,72 +23,78 @@ const closeModalBtn = document.getElementById('closeModal');
 
 // ================== Глобальное состояние ==================
 let allApps = [];
+let allGames = [];
 
 // ================== Функции ==================
-function loadApps() {
-  db.collection('apps').get()
-    .then((querySnapshot) => {
+function loadData() {
+  loading.style.display = 'block';
+
+  // Загружаем apps
+  const appsPromise = db.collection('apps').get()
+    .then(snapshot => {
+      allApps = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    });
+
+  // Загружаем games
+  const gamesPromise = db.collection('games').get()
+    .then(snapshot => {
+      allGames = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    });
+
+  Promise.all([appsPromise, gamesPromise])
+    .then(() => {
       loading.style.display = 'none';
 
-      if (querySnapshot.empty) {
-        appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Приложений пока нет</p>';
+      if (allApps.length === 0 && allGames.length === 0) {
+        appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Приложений и игр пока нет</p>';
         return;
       }
 
-      allApps = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-
-      // По умолчанию показываем вкладку "Apps"
-      renderApps('apps');
+      // По умолчанию показываем вкладку Apps
+      renderList('apps');
     })
     .catch(error => {
-      console.error("Ошибка загрузки приложений:", error);
+      console.error("Ошибка загрузки данных:", error);
       loading.innerHTML = 'Ошибка загрузки. Проверь консоль.';
       loading.style.color = '#ff6b6b';
     });
 }
 
-function renderApps(category) {
+function renderList(category) {
   appList.innerHTML = '';
 
-  const filtered = allApps.filter(app => {
-    const cat = (app.категория || '').toLowerCase();
-    if (category === 'apps') return cat.includes('приложени') || !cat.includes('game');
-    if (category === 'games') return cat.includes('game') || cat.includes('игры');
-    return true;
-  });
+  let items = category === 'apps' ? allApps : allGames;
 
-  if (filtered.length === 0) {
-    appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Ничего не найдено</p>';
+  if (items.length === 0) {
+    appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Ничего не найдено в этой категории</p>';
     return;
   }
 
-  filtered.forEach(app => {
+  items.forEach(item => {
     const card = document.createElement('div');
     card.className = 'app-card minimal';
 
     card.innerHTML = `
       <div class="app-header">
-        <img src="${app.icon_url || 'https://via.placeholder.com/64?text=Icon'}" alt="${app.название}" class="app-icon">
-        <h3 class="app-title">${app.название || 'Без названия'}</h3>
+        <img src="${item.icon_url || 'https://via.placeholder.com/64?text=Icon'}" alt="${item.название}" class="app-icon">
+        <h3 class="app-title">${item.название || 'Без названия'}</h3>
       </div>
-      <button class="btn-open" data-app-id="${app.id}">Открыть</button>
+      <button class="btn-open" data-id="${item.id}" data-category="${category}">Открыть</button>
     `;
 
     appList.appendChild(card);
   });
 }
 
-function openModal(appId) {
-  const app = allApps.find(a => a.id === appId);
-  if (!app) return;
+function openModal(itemId, category) {
+  const items = category === 'apps' ? allApps : allGames;
+  const item = items.find(i => i.id === itemId);
+  if (!item) return;
 
-  document.getElementById('modalIcon').src = app.icon_url || 'https://via.placeholder.com/128?text=Icon';
-  document.getElementById('modalTitle').textContent = app.название || 'Без названия';
-  document.getElementById('modalFeatures').textContent = app.функции || 'Нет дополнительной информации';
-  document.getElementById('modalDownloadBtn').href = app.download_url || '#';
+  document.getElementById('modalIcon').src = item.icon_url || 'https://via.placeholder.com/128?text=Icon';
+  document.getElementById('modalTitle').textContent = item.название || 'Без названия';
+  document.getElementById('modalFeatures').textContent = item.функции || 'Нет дополнительной информации';
+  document.getElementById('modalDownloadBtn').href = item.download_url || '#';
 
   modal.style.display = 'flex';
 }
@@ -96,8 +102,9 @@ function openModal(appId) {
 // ================== События ==================
 appList.addEventListener('click', e => {
   if (e.target.classList.contains('btn-open')) {
-    const appId = e.target.dataset.appId;
-    openModal(appId);
+    const itemId = e.target.dataset.id;
+    const category = e.target.dataset.category;
+    openModal(itemId, category);
   }
 });
 
@@ -119,7 +126,7 @@ document.querySelectorAll('.tab-item').forEach(tab => {
     const tabType = tab.dataset.tab;
 
     if (tabType === 'apps' || tabType === 'games') {
-      renderApps(tabType);
+      renderList(tabType);
     } else {
       appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Раздел в разработке</p>';
     }
@@ -127,4 +134,4 @@ document.querySelectorAll('.tab-item').forEach(tab => {
 });
 
 // ================== Запуск ==================
-loadApps();
+loadData();
