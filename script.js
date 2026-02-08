@@ -65,6 +65,7 @@ function renderList(category, searchQuery = '') {
 
   let items = category === 'apps' ? allApps : allGames;
 
+  // Фильтр по поиску (если есть запрос)
   if (searchQuery) {
     const query = searchQuery.toLowerCase();
     items = items.filter(item => {
@@ -106,7 +107,6 @@ function openModal(itemId, category) {
   document.getElementById('modalSize').textContent = item.размер || '—';
   document.getElementById('modalDownloadBtn').href = item.download_url || '#';
 
-  // Показываем модалку и запускаем анимацию появления
   modal.style.display = 'flex';
   modal.classList.remove('closing');
   // Даём браузеру применить display, затем запускаем анимацию
@@ -131,7 +131,7 @@ function closeModalWithAnimation() {
     modal.style.display = 'none';
     modal.classList.remove('closing');
     modal.classList.remove('show');
-  }, 500); // 500 мс — длительность анимации (transition)
+  }, 450); // синхронно с длительностью анимации
 }
 
 closeModalBtn.addEventListener('click', closeModalWithAnimation);
@@ -168,7 +168,7 @@ document.querySelectorAll('.tab-item').forEach(tab => {
   });
 });
 
-// Поиск в реальном времени
+// Поиск в реальном времени — только если есть текст
 searchInput.addEventListener('input', () => {
   const query = searchInput.value.trim();
 
