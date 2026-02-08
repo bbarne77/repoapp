@@ -1,4 +1,4 @@
-/* Reset + переменные — теперь светлая тема */
+/* Reset + переменные */
 * {
   margin: 0;
   padding: 0;
@@ -6,16 +6,17 @@
 }
 
 :root {
-  --bg-start: #e0f2fe;          /* очень светлый голубой сверху */
-  --bg-end:   #bae6fd;          /* чуть насыщеннее голубой снизу — чистый, свежий */
-  --accent:   #3b82f6;          /* яркий синий для кнопок/акцентов */
-  --accent-dark: #2563eb;
-  --card-bg:  rgba(255, 255, 255, 0.75);   /* полупрозрачные белые карточки с blur */
-  --text:     #0f172a;          /* тёмный текст для читаемости */
-  --text-sec: #475569;
+  --bg-start: #0f172a;          /* глубокий тёмно-синий сверху */
+  --bg-end:   #1e40af;          /* насыщенный синий-голубой снизу */
+  --accent:   #60a5fa;          /* светло-голубой для кнопок/акцентов */
+  --accent-dark: #3b82f6;
+  --card-bg:  rgba(30, 41, 59, 0.75);  /* полупрозрачные тёмные карточки */
+  --text:     #f1f5f9;          /* почти белый текст */
+  --text-sec: #cbd5e1;
+  --header-bg: rgba(15, 23, 42, 0.85); /* тёмная шапка */
   --radius:   20px;
   --blur:     blur(16px);
-  --shadow:   0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow:   0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 body {
@@ -28,7 +29,7 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Шапка — центр + blur + safe area */
+/* Шапка — тёмная, с blur */
 .header {
   position: fixed;
   top: 0;
@@ -39,8 +40,8 @@ body {
   padding-top: env(safe-area-inset-top);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
-  background: rgba(224, 242, 254, 0.68);   /* полупрозрачный под фон */
-  border-bottom: 1px solid rgba(59, 130, 246, 0.12);
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(96, 165, 250, 0.12);
 }
 
 .header-content {
@@ -54,22 +55,22 @@ body {
   font-size: 19px;
   font-weight: 600;
   letter-spacing: -0.4px;
-  background: linear-gradient(90deg, #60a5fa, #3b82f6);
+  background: linear-gradient(90deg, #93c5fd, #60a5fa, #3b82f6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Основной контент */
+/* Контент */
 .main-content {
   padding-top: calc(60px + env(safe-area-inset-top));
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: env(safe-area-inset-bottom);
   margin: 0 auto;
-  max-width: 480px;   /* комфортно на телефонах, но не ограничиваем сильно на ПК */
+  max-width: 480px;
 }
 
-/* Пока заглушка hero — адаптирована под светлую тему */
+/* Hero-заглушка */
 .placeholder-hero {
   text-align: center;
   padding: 80px 20px 60px;
@@ -79,7 +80,6 @@ body {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 12px;
-  color: var(--text);
 }
 
 .placeholder-hero p {
@@ -87,7 +87,7 @@ body {
   color: var(--text-sec);
 }
 
-/* Карточки (пример для будущих приложений) */
+/* Пример карточки приложения */
 .app-card {
   background: var(--card-bg);
   backdrop-filter: var(--blur);
@@ -95,11 +95,10 @@ body {
   padding: 16px;
   margin-bottom: 20px;
   box-shadow: var(--shadow);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .app-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
 }
-
-/* Нет принудительной блокировки десктопа — сайт теперь открывается везде */
