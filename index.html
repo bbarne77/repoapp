@@ -26,7 +26,7 @@
     </div>
   </main>
 
-  <!-- Модальное окно (без категории) -->
+  <!-- Модальное окно с предупреждением -->
   <div id="appModal" class="modal">
     <div class="modal-content">
       <span class="close-modal" id="closeModal">&times;</span>
@@ -36,10 +36,25 @@
       </div>
       <div class="modal-body">
         <p id="modalFeatures"></p>
+
+        <!-- Предупреждение о сертификате -->
+        <div class="cert-warning">
+          <div class="warning-icon">⚠️</div>
+          <div class="warning-text">
+            <p>Для установки этого IPA-файла необходим действующий сертификат разработчика.</p>
+            <p>Без сертификата приложение не запустится на устройстве.</p>
+          </div>
+        </div>
       </div>
-      <a id="modalDownloadBtn" href="#" class="btn-install" target="_blank" rel="noopener noreferrer">
-        Установить
-      </a>
+
+      <div class="modal-buttons">
+        <a id="modalDownloadBtn" href="#" class="btn-install" target="_blank" rel="noopener noreferrer">
+          Установить
+        </a>
+        <a href="https://ipaworld.info/" class="btn-buy-cert" target="_blank" rel="noopener noreferrer">
+          Купить сертификат
+        </a>
+      </div>
     </div>
   </div>
 
@@ -63,7 +78,6 @@
     </a>
   </nav>
 
-  <!-- Подключение всей логики -->
   <script src="script.js"></script>
 </body>
 </html>
