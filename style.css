@@ -21,7 +21,7 @@
 }
 
 /* ────────────────────────────────────────────────
-   Фирменный звёздный космос (Grok-style)
+   Фикс белого экрана на iOS/Safari + звёздный фон
 ───────────────────────────────────────────────── */
 
 body {
@@ -34,118 +34,134 @@ body {
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
   position: relative;
   overflow-x: hidden;
+
+  /* Критические фиксы для Safari/iOS */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-/* Слой мелких и средних звёзд (медленный дрейф) */
+/* Слой звёзд 1 */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -2;
-  background: 
-    radial-gradient(1.5px 1.5px at 20px 30px, #eee, rgba(0,0,0,0)),
-    radial-gradient(1.8px 1.8px at 40px 70px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1.2px 1.2px at 50px 160px, #ddd, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1.6px 1.6px at 130px 80px, #eee, rgba(0,0,0,0)),
-    radial-gradient(1.4px 1.4px at 160px 120px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1.7px 1.7px at 200px 200px, #eee, rgba(0,0,0,0));
+
+  background:
+    radial-gradient(1.8px 1.8px at 25% 35%, #eee, transparent 70%),
+    radial-gradient(1.6px 1.6px at 55% 65%, #fff, transparent 70%),
+    radial-gradient(1.4px 1.4px at 70% 20%, #ddd, transparent 70%),
+    radial-gradient(2px 2px at 15% 80%, #fff, transparent 70%),
+    radial-gradient(1.7px 1.7px at 85% 45%, #eee, transparent 70%);
   background-repeat: repeat;
-  background-size: 220px 220px;
-  opacity: 0.75;
-  animation: drift 200s linear infinite;
+  background-size: 240px 240px;
+  opacity: 0.72;
+
+  animation: drift-bg 240s linear infinite;
+  will-change: background-position;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
-/* Второй слой звёзд (другой масштаб и скорость) */
+/* Слой звёзд 2 */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -2;
-  background: 
-    radial-gradient(1px 1px at 10px 20px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1.3px 1.3px at 60px 150px, #eee, rgba(0,0,0,0)),
-    radial-gradient(1.5px 1.5px at 110px 90px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1.2px 1.2px at 180px 50px, #ddd, rgba(0,0,0,0)),
-    radial-gradient(1.4px 1.4px at 250px 180px, #fff, rgba(0,0,0,0));
+
+  background:
+    radial-gradient(1.3px 1.3px at 10% 15%, #fff, transparent 70%),
+    radial-gradient(1.5px 1.5px at 40% 75%, #eee, transparent 70%),
+    radial-gradient(1.2px 1.2px at 75% 30%, #ddd, transparent 70%),
+    radial-gradient(1.6px 1.6px at 90% 90%, #fff, transparent 70%);
   background-repeat: repeat;
-  background-size: 320px 320px;
-  opacity: 0.55;
-  animation: drift 280s linear infinite reverse;
+  background-size: 360px 360px;
+  opacity: 0.50;
+
+  animation: drift-bg 320s linear infinite reverse;
+  will-change: background-position;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
-/* Мягкое мерцание отдельных звёзд */
+/* Анимация дрейфа через background-position — стабильнее на iOS */
+@keyframes drift-bg {
+  from { background-position: 0 0; }
+  to   { background-position: -360px -360px; }
+}
+
+/* Мерцание отдельных звёзд (нужен <div class="stars-twinkle"></div> в HTML) */
 .stars-twinkle {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  box-shadow: 
-    80px 120px 1px #fff,
-    140px 300px 1px #eee,
-    220px 60px 1px #ddd,
-    310px 190px 1px #fff,
-    390px 80px 1px #eee,
-    480px 340px 1px #fff,
-    590px 130px 1px #ddd,
-    680px 270px 1px #eee,
-    810px 50px 1px #fff,
-    890px 390px 1px #ddd,
-    150px 220px 1px #eee,
-    340px 410px 1px #fff;
-  opacity: 0.85;
-  animation: twinkle 10s ease-in-out infinite alternate;
+  box-shadow:
+    90px 140px 1px #fff,
+    160px 320px 1px #eee,
+    240px 70px 1px #ddd,
+    330px 210px 1px #fff,
+    410px 90px 1px #eee,
+    500px 360px 1px #fff,
+    610px 150px 1px #ddd,
+    700px 290px 1px #eee,
+    830px 60px 1px #fff,
+    910px 410px 1px #ddd;
+  opacity: 0.82;
+  animation: twinkle 11s ease-in-out infinite alternate;
+  will-change: opacity, transform;
 }
 
-/* Редкие падающие звёзды */
+/* Падающие звёзды (нужны <div class="shooting-star"></div> в HTML) */
 .shooting-star {
   position: fixed;
-  top: -15%;
-  left: -15%;
-  width: 140px;
+  top: -20%;
+  left: -20%;
+  width: 160px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(165, 216, 255, 0.9), #60a5fa, transparent);
-  transform: rotate(28deg);
+  background: linear-gradient(90deg, transparent, rgba(165,216,255,0.85), #60a5fa, transparent);
+  transform: rotate(30deg);
   opacity: 0;
   pointer-events: none;
   z-index: -1;
-  animation: shoot 22s linear infinite;
-  animation-delay: 4s;
+  animation: shoot 26s linear infinite;
+  will-change: transform, opacity;
 }
 
 .shooting-star:nth-child(2) {
-  animation-delay: 9s;
-  top: 10%;
-  transform: rotate(36deg);
-  width: 160px;
+  animation-delay: 8s;
+  top: 15%;
+  transform: rotate(38deg);
+  width: 180px;
 }
 
 .shooting-star:nth-child(3) {
-  animation-delay: 15s;
-  transform: rotate(20deg);
-  width: 120px;
-}
-
-@keyframes drift {
-  from { transform: translate(0, 0); }
-  to   { transform: translate(-220px, -220px); }
+  animation-delay: 16s;
+  transform: rotate(22deg);
+  width: 140px;
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.55; transform: scale(1); }
-  50%      { opacity: 1;   transform: scale(1.015); }
+  0%, 100% { opacity: 0.58; transform: scale(1); }
+  50%      { opacity: 0.98; transform: scale(1.012); }
 }
 
 @keyframes shoot {
-  0%   { transform: translate(-120vw, -120vh) rotate(28deg); opacity: 0; }
-  4%   { opacity: 0.85; }
-  8%   { opacity: 0.6; }
-  100% { transform: translate(220vw, 220vh) rotate(28deg); opacity: 0; }
+  0%   { transform: translate(-140vw, -140vh) rotate(30deg); opacity: 0; }
+  3%   { opacity: 0.8; }
+  7%   { opacity: 0.55; }
+  100% { transform: translate(240vw, 240vh) rotate(30deg); opacity: 0; }
 }
 
-/* Основной контент поверх фона */
+/* ────────────────────────────────────────────────
+   Основной контент и остальные стили
+───────────────────────────────────────────────── */
+
 .main-content {
   position: relative;
   z-index: 1;
@@ -157,7 +173,6 @@ body::after {
   max-width: 480px;
 }
 
-/* Шапка */
 .header {
   position: fixed;
   top: 0;
@@ -188,7 +203,6 @@ body::after {
   -webkit-text-fill-color: transparent;
 }
 
-/* Поиск */
 .search-container {
   margin-bottom: 20px;
   padding: 8px 0;
@@ -217,7 +231,6 @@ body::after {
   background: rgba(255, 255, 255, 0.12);
 }
 
-/* Список карточек */
 .app-list {
   display: flex;
   flex-direction: column;
@@ -314,18 +327,14 @@ body::after {
   padding: 20px;
   opacity: 0;
   visibility: hidden;
-  transition: 
-    opacity 0.34s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0.34s step-end;
+  transition: opacity 0.34s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.34s step-end;
   will-change: opacity, visibility;
 }
 
 .modal.show {
   opacity: 1;
   visibility: visible;
-  transition: 
-    opacity 0.34s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0.34s step-start;
+  transition: opacity 0.34s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.34s step-start;
 }
 
 .modal-content {
