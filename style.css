@@ -1,4 +1,4 @@
-/* Reset + переменные */
+/* Reset + переменные — теперь светлая тема */
 * {
   margin: 0;
   padding: 0;
@@ -6,15 +6,16 @@
 }
 
 :root {
-  --bg-start: #0d1b2a;          /* тёмно-синий */
-  --bg-end:   #1b263b;          /* чуть светлее, серо-синий */
-  --accent:   #60a5fa;          /* яркий голубой */
-  --accent-dark: #3b82f6;
-  --card-bg:  rgba(30, 41, 59, 0.75);
-  --text:     #f1f5f9;
-  --text-sec: #94a3b8;
+  --bg-start: #e0f2fe;          /* очень светлый голубой сверху */
+  --bg-end:   #bae6fd;          /* чуть насыщеннее голубой снизу — чистый, свежий */
+  --accent:   #3b82f6;          /* яркий синий для кнопок/акцентов */
+  --accent-dark: #2563eb;
+  --card-bg:  rgba(255, 255, 255, 0.75);   /* полупрозрачные белые карточки с blur */
+  --text:     #0f172a;          /* тёмный текст для читаемости */
+  --text-sec: #475569;
   --radius:   20px;
   --blur:     blur(16px);
+  --shadow:   0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 body {
@@ -38,8 +39,8 @@ body {
   padding-top: env(safe-area-inset-top);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
-  background: rgba(13, 27, 42, 0.68);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  background: rgba(224, 242, 254, 0.68);   /* полупрозрачный под фон */
+  border-bottom: 1px solid rgba(59, 130, 246, 0.12);
 }
 
 .header-content {
@@ -53,32 +54,32 @@ body {
   font-size: 19px;
   font-weight: 600;
   letter-spacing: -0.4px;
-  color: var(--text);
-  background: linear-gradient(90deg, #93c5fd, #60a5fa, #3b82f6);
+  background: linear-gradient(90deg, #60a5fa, #3b82f6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Основной контент — отступ под шапку + safe areas */
+/* Основной контент */
 .main-content {
   padding-top: calc(60px + env(safe-area-inset-top));
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: env(safe-area-inset-bottom);
-  max-width: 428px;               /* iPhone 14/15/16 Pro Max ширина */
   margin: 0 auto;
+  max-width: 480px;   /* комфортно на телефонах, но не ограничиваем сильно на ПК */
 }
 
-/* Пока заглушка для hero */
+/* Пока заглушка hero — адаптирована под светлую тему */
 .placeholder-hero {
   text-align: center;
-  padding: 60px 20px 40px;
+  padding: 80px 20px 60px;
 }
 
 .placeholder-hero h1 {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 12px;
+  color: var(--text);
 }
 
 .placeholder-hero p {
@@ -86,20 +87,19 @@ body {
   color: var(--text-sec);
 }
 
-/* Блокируем десктоп — если ширина > 500px → центрируем и ограничиваем */
-@media (min-width: 501px) {
-  body::before {
-    content: "Этот сайт оптимизирован только под iPhone / мобильные устройства iOS";
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.92);
-    color: white;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px;
-    z-index: 9999;
-  }
+/* Карточки (пример для будущих приложений) */
+.app-card {
+  background: var(--card-bg);
+  backdrop-filter: var(--blur);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
 }
+
+.app-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Нет принудительной блокировки десктопа — сайт теперь открывается везде */
