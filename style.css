@@ -132,21 +132,30 @@ body {
 }
 
 .btn-open {
-  background: rgba(96, 165, 250, 0.18);
-  color: var(--accent);
-  border: 1px solid rgba(96, 165, 250, 0.3);
-  padding: 8px 16px;
-  border-radius: 12px;
-  font-weight: 600;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 14px;
+  font-weight: 700;
   font-size: 15px;
   cursor: pointer;
   transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.35);
   white-space: nowrap;
+  min-width: 100px;
+  text-align: center;
 }
 
 .btn-open:hover {
-  background: rgba(96, 165, 250, 0.28);
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(96, 165, 250, 0.5);
+  background: linear-gradient(135deg, #7dd3fc, #60a5fa);
+}
+
+.btn-open:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.3);
 }
 
 /* Модальное окно */
