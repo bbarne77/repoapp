@@ -1,5 +1,3 @@
-// script.js — вся логика приложения
-
 // ================== Firebase Config ==================
 const firebaseConfig = {
   apiKey: "AIzaSyB-Bx0qZ7nGN8Nn_DfUyVKuCfzmoNDnwjw",
@@ -11,11 +9,10 @@ const firebaseConfig = {
   measurementId: "G-W5C64GL3X6"
 };
 
-// Инициализация Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// ================== DOM элементы ==================
+// ================== DOM ==================
 const appList = document.getElementById('appList');
 const loading = document.getElementById('loading');
 const modal = document.getElementById('appModal');
@@ -23,11 +20,11 @@ const closeModalBtn = document.getElementById('closeModal');
 const searchContainer = document.getElementById('searchContainer');
 const searchInput = document.getElementById('searchInput');
 
-// ================== Глобальное состояние ==================
+// ================== State ==================
 let allApps = [];
 let allGames = [];
 
-// ================== Функции ==================
+// ================== Functions ==================
 function loadData() {
   loading.style.display = 'block';
 
@@ -44,17 +41,14 @@ function loadData() {
   Promise.all([appsPromise, gamesPromise])
     .then(() => {
       loading.style.display = 'none';
-
       if (allApps.length === 0 && allGames.length === 0) {
         appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Приложений и игр пока нет</p>';
         return;
       }
-
-      // По умолчанию показываем вкладку Apps
       renderList('apps');
     })
     .catch(error => {
-      console.error("Ошибка загрузки данных:", error);
+      console.error("Ошибка загрузки:", error);
       loading.innerHTML = 'Ошибка загрузки. Проверь консоль.';
       loading.style.color = '#ff6b6b';
     });
@@ -62,10 +56,8 @@ function loadData() {
 
 function renderList(category, searchQuery = '') {
   appList.innerHTML = '';
-
   let items = category === 'apps' ? allApps : allGames;
 
-  // Фильтр по поиску (если есть запрос)
   if (searchQuery) {
     const query = searchQuery.toLowerCase();
     items = items.filter(item => {
@@ -82,7 +74,6 @@ function renderList(category, searchQuery = '') {
   items.forEach(item => {
     const card = document.createElement('div');
     card.className = 'app-card minimal';
-
     card.innerHTML = `
       <div class="app-header">
         <img src="${item.icon_url || 'https://via.placeholder.com/64?text=Icon'}" alt="${item.название}" class="app-icon">
@@ -90,7 +81,6 @@ function renderList(category, searchQuery = '') {
       </div>
       <button class="btn-open" data-id="${item.id}" data-category="${category}">Открыть</button>
     `;
-
     appList.appendChild(card);
   });
 }
@@ -107,15 +97,25 @@ function openModal(itemId, category) {
   document.getElementById('modalSize').textContent = item.размер || '—';
   document.getElementById('modalDownloadBtn').href = item.download_url || '#';
 
-  modal.style.display = 'flex';
   modal.classList.remove('closing');
-  // Даём браузеру применить display, затем запускаем анимацию
+  modal.style.display = 'flex';
+
   requestAnimationFrame(() => {
-    modal.classList.add('show');
+    requestAnimationFrame(() => {
+      modal.classList.add('show');
+    });
   });
 }
 
-// ================== События ==================
+function closeModalWithAnimation() {
+  modal.classList.add('closing');
+  setTimeout(() => {
+    modal.classList.remove('show', 'closing');
+    modal.style.display = 'none';
+  }, 340);
+}
+
+// ================== Events ==================
 appList.addEventListener('click', e => {
   if (e.target.classList.contains('btn-open')) {
     const itemId = e.target.dataset.id;
@@ -123,16 +123,6 @@ appList.addEventListener('click', e => {
     openModal(itemId, category);
   }
 });
-
-// Закрытие модалки с анимацией
-function closeModalWithAnimation() {
-  modal.classList.add('closing');
-  setTimeout(() => {
-    modal.style.display = 'none';
-    modal.classList.remove('closing');
-    modal.classList.remove('show');
-  }, 450); // синхронно с длительностью анимации
-}
 
 closeModalBtn.addEventListener('click', closeModalWithAnimation);
 
@@ -142,11 +132,9 @@ window.addEventListener('click', e => {
   }
 });
 
-// Переключение вкладок
 document.querySelectorAll('.tab-item').forEach(tab => {
   tab.addEventListener('click', e => {
     e.preventDefault();
-
     document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
 
@@ -168,23 +156,18 @@ document.querySelectorAll('.tab-item').forEach(tab => {
   });
 });
 
-// Поиск в реальном времени — только если есть текст
 searchInput.addEventListener('input', () => {
   const query = searchInput.value.trim();
-
   if (query.length === 0) {
     appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Введите название для поиска...</p>';
     return;
   }
-
   renderSearchResults(query);
 });
 
 function renderSearchResults(query) {
   appList.innerHTML = '';
-
   const allItems = [...allApps, ...allGames];
-
   const filtered = allItems.filter(item => {
     const name = (item.название || '').toLowerCase();
     return name.includes(query.toLowerCase());
@@ -198,7 +181,6 @@ function renderSearchResults(query) {
   filtered.forEach(item => {
     const card = document.createElement('div');
     card.className = 'app-card minimal';
-
     card.innerHTML = `
       <div class="app-header">
         <img src="${item.icon_url || 'https://via.placeholder.com/64?text=Icon'}" alt="${item.название}" class="app-icon">
@@ -206,10 +188,9 @@ function renderSearchResults(query) {
       </div>
       <button class="btn-open" data-id="${item.id}" data-category="${allApps.includes(item) ? 'apps' : 'games'}">Открыть</button>
     `;
-
     appList.appendChild(card);
   });
 }
 
-// ================== Запуск ==================
+// ================== Start ==================
 loadData();
