@@ -103,6 +103,8 @@ function openModal(itemId, category) {
   document.getElementById('modalIcon').src = item.icon_url || 'https://via.placeholder.com/128?text=Icon';
   document.getElementById('modalTitle').textContent = item.название || 'Без названия';
   document.getElementById('modalFeatures').textContent = item.функции || '';
+  document.getElementById('modalVersion').textContent = item.версия || '—';
+  document.getElementById('modalSize').textContent = item.размер || '—';
   document.getElementById('modalDownloadBtn').href = item.download_url || '#';
 
   modal.style.display = 'flex';
