@@ -35,7 +35,7 @@ body {
 }
 
 /* ========================================= */
-/* Шапка (тёмная, по центру)                 */
+/* Шапка — теперь выше (56px + safe-area)    */
 /* ========================================= */
 
 .header {
@@ -44,7 +44,7 @@ body {
   left: 0;
   right: 0;
   z-index: 100;
-  height: calc(44px + env(safe-area-inset-top));
+  height: calc(56px + env(safe-area-inset-top));
   padding-top: env(safe-area-inset-top);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
@@ -60,20 +60,20 @@ body {
 }
 
 .logo {
-  font-size: 19px;
-  font-weight: 600;
-  letter-spacing: -0.4px;
+  font-size: 21px;                 /* чуть увеличил шрифт под высоту */
+  font-weight: 700;
+  letter-spacing: -0.5px;
   background: linear-gradient(90deg, #93c5fd, #60a5fa, #3b82f6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* ========================================= */
-/* Основной контент                          */
+/* Основной контент — подвинули вниз         */
 /* ========================================= */
 
 .main-content {
-  padding-top: calc(60px + env(safe-area-inset-top));
+  padding-top: calc(72px + env(safe-area-inset-top));  /* 56px шапка + запас 16px */
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: env(safe-area-inset-bottom);
@@ -81,7 +81,7 @@ body {
   max-width: 480px;
 }
 
-/* Hero-заглушка (можно потом убрать или стилизовать лучше) */
+/* Hero-заглушка */
 .placeholder-hero {
   text-align: center;
   padding: 80px 20px 60px;
@@ -101,7 +101,7 @@ body {
 }
 
 /* ========================================= */
-/* Карточка приложения (пример)              */
+/* Карточка приложения                       */
 /* ========================================= */
 
 .app-card {
@@ -120,7 +120,7 @@ body {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
 }
 
-/* Иконка приложения (круглая, как в App Store) */
+/* Иконка приложения */
 .app-icon {
   width: 64px;
   height: 64px;
@@ -130,7 +130,7 @@ body {
   overflow: hidden;
 }
 
-/* Кнопка "Установить" в стиле iOS */
+/* Кнопка "Установить" */
 .btn-install {
   background: var(--accent);
   color: #0f172a;
@@ -149,7 +149,7 @@ body {
 }
 
 /* ========================================= */
-/* Адаптивность (хотя основной фокус — мобильный) */
+/* Адаптивность                              */
 /* ========================================= */
 
 @media (min-width: 768px) {
