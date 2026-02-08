@@ -1,414 +1,190 @@
-/* ========================================= */
-/* Reset + переменные                        */
-/* ========================================= */
+// script.js — вся логика приложения
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+// ================== Firebase Config ==================
+const firebaseConfig = {
+  apiKey: "AIzaSyB-Bx0qZ7nGN8Nn_DfUyVKuCfzmoNDnwjw",
+  authDomain: "ipaworld.firebaseapp.com",
+  projectId: "ipaworld",
+  storageBucket: "ipaworld.firebasestorage.app",
+  messagingSenderId: "456186416178",
+  appId: "1:456186416178:web:be65c6a6310d809234002b",
+  measurementId: "G-W5C64GL3X6"
+};
+
+// Инициализация Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ================== DOM элементы ==================
+const appList = document.getElementById('appList');
+const loading = document.getElementById('loading');
+const modal = document.getElementById('appModal');
+const closeModalBtn = document.getElementById('closeModal');
+const searchContainer = document.getElementById('searchContainer');
+const searchInput = document.getElementById('searchInput');
+
+// ================== Глобальное состояние ==================
+let allApps = [];
+let allGames = [];
+
+// ================== Функции ==================
+function loadData() {
+  loading.style.display = 'block';
+
+  const appsPromise = db.collection('apps').get()
+    .then(snapshot => {
+      allApps = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    });
+
+  const gamesPromise = db.collection('games').get()
+    .then(snapshot => {
+      allGames = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    });
+
+  Promise.all([appsPromise, gamesPromise])
+    .then(() => {
+      loading.style.display = 'none';
+
+      if (allApps.length === 0 && allGames.length === 0) {
+        appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Приложений и игр пока нет</p>';
+        return;
+      }
+
+      // По умолчанию показываем Apps
+      renderList('apps');
+    })
+    .catch(error => {
+      console.error("Ошибка загрузки данных:", error);
+      loading.innerHTML = 'Ошибка загрузки. Проверь консоль.';
+      loading.style.color = '#ff6b6b';
+    });
 }
 
-:root {
-  --bg-start:    #0f1d3a;
-  --bg-end:      #3b82f6;
-  --accent:      #60a5fa;
-  --accent-dark: #2563eb;
-  --card-bg:     rgba(30, 58, 138, 0.65);
-  --text:        #f0f9ff;
-  --text-sec:    #bfdbfe;
-  --header-bg:   rgba(15, 23, 55, 0.88);
-  --border:      rgba(96, 165, 250, 0.18);
-  --radius:      20px;
-  --blur:        blur(16px);
-  --shadow:      0 10px 30px rgba(0, 0, 0, 0.3);
-  --transition:  all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+function renderList(category, searchQuery = '') {
+  appList.innerHTML = '';
 
-body {
-  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
-  color: var(--text);
-  min-height: 100dvh;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  padding-bottom: calc(80px + env(safe-area-inset-bottom));
-}
+  let items = category === 'apps' ? allApps : allGames;
 
-/* Шапка */
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  height: calc(56px + env(safe-area-inset-top));
-  padding-top: env(safe-area-inset-top);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  background: var(--header-bg);
-  border-bottom: 1px solid var(--border);
-}
-
-.header-content {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  font-size: 21px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  background: linear-gradient(90deg, #93c5fd, #60a5fa, #3b82f6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Контент */
-.main-content {
-  padding-top: calc(72px + env(safe-area-inset-top));
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: 20px;
-  margin: 0 auto;
-  max-width: 480px;
-}
-
-/* Поисковая строка */
-.search-container {
-  margin-bottom: 20px;
-  padding: 8px 0;
-}
-
-.search-input {
-  width: 100%;
-  padding: 12px 16px;
-  font-size: 17px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(96, 165, 250, 0.3);
-  border-radius: 14px;
-  color: var(--text);
-  outline: none;
-  transition: var(--transition);
-  backdrop-filter: blur(8px);
-}
-
-.search-input::placeholder {
-  color: var(--text-sec);
-}
-
-.search-input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
-  background: rgba(255, 255, 255, 0.12);
-}
-
-/* Список приложений */
-.app-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 20px 0;
-}
-
-.loading {
-  text-align: center;
-  padding: 80px 20px;
-  color: var(--text-sec);
-  font-size: 17px;
-}
-
-/* Минималистичная карточка */
-.app-card.minimal {
-  background: var(--card-bg);
-  backdrop-filter: var(--blur);
-  border-radius: var(--radius);
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-  border: 1px solid var(--border);
-}
-
-.app-card.minimal:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
-}
-
-.app-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex: 1;
-}
-
-.app-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 16px;
-  object-fit: cover;
-  background: #334155;
-}
-
-.app-title {
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-/* Кнопка "Открыть" */
-.btn-open {
-  background: rgba(96, 165, 250, 0.25);
-  color: var(--accent);
-  border: 1px solid rgba(96, 165, 250, 0.35);
-  padding: 9px 18px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  transition: var(--transition);
-  white-space: nowrap;
-  min-width: 90px;
-  text-align: center;
-  backdrop-filter: blur(8px);
-}
-
-.btn-open:hover {
-  background: rgba(96, 165, 250, 0.38);
-  border-color: rgba(96, 165, 250, 0.55);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(96, 165, 250, 0.25);
-}
-
-.btn-open:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-/* Модальное окно */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  z-index: 200;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.modal-content {
-  background: var(--card-bg);
-  backdrop-filter: var(--blur);
-  border-radius: 24px;
-  padding: 24px;
-  max-width: 420px;
-  width: 100%;
-  border: 1px solid var(--border);
-  position: relative;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-}
-
-.close-modal {
-  position: absolute;
-  top: 16px;
-  right: 20px;
-  font-size: 32px;
-  color: var(--text-sec);
-  cursor: pointer;
-  line-height: 1;
-}
-
-.close-modal:hover {
-  color: var(--text);
-}
-
-.modal-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.modal-icon {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  object-fit: cover;
-}
-
-.modal h2 {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.modal-body {
-  margin: 16px 0 24px;
-}
-
-/* Блок функций */
-.features-block {
-  background: rgba(96, 165, 250, 0.10);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: 14px 16px;
-  margin-bottom: 20px;
-  border: 1px solid rgba(96, 165, 250, 0.25);
-}
-
-.features-block p {
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--text);
-  margin: 0;
-}
-
-.features-block p:empty::before {
-  content: "Нет дополнительной информации";
-  color: var(--text-sec);
-  font-style: italic;
-}
-
-/* Предупреждение о сертификате */
-.cert-warning {
-  background: rgba(255, 193, 7, 0.12);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: 14px 16px;
-  border: 1px solid rgba(255, 193, 7, 0.3);
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.warning-icon {
-  font-size: 24px;
-  line-height: 1;
-  color: #ffc107;
-  flex-shrink: 0;
-}
-
-.warning-text p {
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--text-sec);
-  margin: 0;
-}
-
-/* Кнопки в модалке */
-.modal-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-#modalDownloadBtn {
-  display: block;
-  width: 100%;
-  background: var(--accent);
-  color: #0f172a;
-  text-align: center;
-  padding: 14px;
-  border-radius: 14px;
-  font-weight: 600;
-  font-size: 17px;
-  text-decoration: none;
-  transition: var(--transition);
-}
-
-#modalDownloadBtn:hover {
-  background: var(--accent-dark);
-  transform: scale(1.02);
-}
-
-.btn-buy-cert {
-  display: block;
-  width: 100%;
-  background: rgba(96, 165, 250, 0.15);
-  color: var(--accent);
-  text-align: center;
-  padding: 12px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 16px;
-  text-decoration: none;
-  border: 1px solid rgba(96, 165, 250, 0.3);
-  transition: var(--transition);
-}
-
-.btn-buy-cert:hover {
-  background: rgba(96, 165, 250, 0.25);
-  transform: translateY(-1px);
-}
-
-/* Нижняя навигация */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: calc(60px + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
-  background: var(--header-bg);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  z-index: 100;
-}
-
-.tab-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-sec);
-  text-decoration: none;
-  font-size: 10px;
-  font-weight: 500;
-  width: 25%;
-  transition: var(--transition);
-}
-
-.tab-item.active {
-  color: var(--accent);
-}
-
-.tab-item.active .tab-icon {
-  filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(180deg);
-  transform: scale(1.15);
-}
-
-.tab-item:hover .tab-icon {
-  filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(180deg);
-}
-
-.tab-icon {
-  width: 28px;
-  height: 28px;
-  margin-bottom: 4px;
-  filter: brightness(0) invert(0.9);
-  transition: var(--transition);
-}
-
-/* Адаптив */
-@media (min-width: 768px) {
-  .main-content {
-    max-width: 720px;
-    padding-left: 32px;
-    padding-right: 32px;
+  // Фильтр по поиску
+  if (searchQuery) {
+    const query = searchQuery.toLowerCase();
+    items = items.filter(item => {
+      const name = (item.название || '').toLowerCase();
+      const features = (item.функции || '').toLowerCase();
+      return name.includes(query) || features.includes(query);
+    });
   }
 
-  .app-card.minimal {
-    max-width: 500px;
-    margin: 0 auto;
+  if (items.length === 0) {
+    appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Ничего не найдено</p>';
+    return;
   }
+
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'app-card minimal';
+
+    card.innerHTML = `
+      <div class="app-header">
+        <img src="${item.icon_url || 'https://via.placeholder.com/64?text=Icon'}" alt="${item.название}" class="app-icon">
+        <h3 class="app-title">${item.название || 'Без названия'}</h3>
+      </div>
+      <button class="btn-open" data-id="${item.id}" data-category="${category}">Открыть</button>
+    `;
+
+    appList.appendChild(card);
+  });
 }
+
+function openModal(itemId, category) {
+  const items = category === 'apps' ? allApps : allGames;
+  const item = items.find(i => i.id === itemId);
+  if (!item) return;
+
+  document.getElementById('modalIcon').src = item.icon_url || 'https://via.placeholder.com/128?text=Icon';
+  document.getElementById('modalTitle').textContent = item.название || 'Без названия';
+  document.getElementById('modalFeatures').textContent = item.функции || '';
+  document.getElementById('modalDownloadBtn').href = item.download_url || '#';
+
+  modal.style.display = 'flex';
+}
+
+// ================== События ==================
+appList.addEventListener('click', e => {
+  if (e.target.classList.contains('btn-open')) {
+    const itemId = e.target.dataset.id;
+    const category = e.target.dataset.category;
+    openModal(itemId, category);
+  }
+});
+
+closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
+window.addEventListener('click', e => {
+  if (e.target === modal) modal.style.display = 'none';
+});
+
+// Переключение вкладок
+document.querySelectorAll('.tab-item').forEach(tab => {
+  tab.addEventListener('click', e => {
+    e.preventDefault();
+
+    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    const tabType = tab.dataset.tab;
+
+    if (tabType === 'apps' || tabType === 'games') {
+      searchContainer.style.display = 'none';
+      searchInput.value = '';
+      renderList(tabType);
+    } else if (tabType === 'search') {
+      searchContainer.style.display = 'block';
+      searchInput.focus();
+      renderSearchResults(); // показываем все при открытии поиска
+    } else {
+      searchContainer.style.display = 'none';
+      appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Раздел в разработке</p>';
+    }
+  });
+});
+
+// Поиск в реальном времени
+searchInput.addEventListener('input', () => {
+  renderSearchResults();
+});
+
+function renderSearchResults() {
+  const query = searchInput.value.trim();
+  appList.innerHTML = '';
+
+  const allItems = [...allApps, ...allGames];
+
+  const filtered = allItems.filter(item => {
+    const name = (item.название || '').toLowerCase();
+    const features = (item.функции || '').toLowerCase();
+    return name.includes(query.toLowerCase()) || features.includes(query.toLowerCase());
+  });
+
+  if (filtered.length === 0) {
+    appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Ничего не найдено</p>';
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'app-card minimal';
+
+    card.innerHTML = `
+      <div class="app-header">
+        <img src="${item.icon_url || 'https://via.placeholder.com/64?text=Icon'}" alt="${item.название}" class="app-icon">
+        <h3 class="app-title">${item.название || 'Без названия'}</h3>
+      </div>
+      <button class="btn-open" data-id="${item.id}" data-category="${allApps.includes(item) ? 'apps' : 'games'}">Открыть</button>
+    `;
+
+    appList.appendChild(card);
+  });
+}
+
+// ================== Запуск ==================
+loadData();
