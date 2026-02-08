@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Firebase Compat SDK (для простых html+js сайтов) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -18,7 +22,10 @@
   </header>
 
   <main class="main-content">
-    <!-- Здесь будет основной контент (карточки приложений, поиск и т.д.) -->
+    <div class="app-list" id="appList">
+      <!-- Карточки будут добавляться сюда -->
+      <div class="loading" id="loading">Загрузка приложений...</div>
+    </div>
   </main>
 
   <!-- Нижняя навигация -->
@@ -40,6 +47,65 @@
       <span>Info</span>
     </a>
   </nav>
+
+  <script>
+    // ================== Firebase Config ==================
+    const firebaseConfig = {
+      apiKey: "AIzaSyB-Bx0qZ7nGN8Nn_DfUyVKuCfzmoNDnwjw",
+      authDomain: "ipaworld.firebaseapp.com",
+      projectId: "ipaworld",
+      storageBucket: "ipaworld.firebasestorage.app",
+      messagingSenderId: "456186416178",
+      appId: "1:456186416178:web:be65c6a6310d809234002b",
+      measurementId: "G-W5C64GL3X6",
+      databaseURL: "https://ipaworld-default-rtdb.firebaseio.com/"  // ← добавь это, если используешь Realtime Database
+    };
+
+    // Инициализация
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // ================== Загрузка приложений ==================
+    const appList = document.getElementById('appList');
+    const loading = document.getElementById('loading');
+
+    db.ref('apps').once('value')
+      .then((snapshot) => {
+        loading.style.display = 'none';
+
+        if (!snapshot.exists()) {
+          appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Приложений пока нет</p>';
+          return;
+        }
+
+        const apps = snapshot.val();
+        Object.values(apps).forEach(app => {
+          const card = document.createElement('div');
+          card.className = 'app-card';
+
+          card.innerHTML = `
+            <div class="app-header">
+              <img src="${app.icon_url || 'https://via.placeholder.com/64?text=Icon'}" alt="${app.название || 'App'}" class="app-icon">
+              <div class="app-info">
+                <h3 class="app-title">${app.название || 'Без названия'}</h3>
+                <p class="app-category">${app.категория || 'Приложения'}</p>
+                <p class="app-features">${app.функции || '—'}</p>
+              </div>
+            </div>
+            <a href="${app.download_url || '#'}" class="btn-install" target="_blank" rel="noopener noreferrer">
+              Установить
+            </a>
+          `;
+
+          appList.appendChild(card);
+        });
+      })
+      .catch((error) => {
+        console.error("Ошибка Firebase:", error);
+        loading.innerHTML = 'Ошибка загрузки. Проверь консоль.';
+        loading.style.color = '#ff6b6b';
+      });
+  </script>
 
   <script src="script.js"></script>
 </body>
