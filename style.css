@@ -1,4 +1,7 @@
-/* Reset и переменные */
+/* ========================================= */
+/* Reset + переменные                        */
+/* ========================================= */
+
 * {
   margin: 0;
   padding: 0;
@@ -6,9 +9,9 @@
 }
 
 :root {
-  --bg-start:    #0f1d3a;
-  --bg-end:      #3b82f6;
-  --accent:      #60a5fa;
+  --bg-start:    #0f1d3a;          /* тёмный синий сверху */
+  --bg-end:      #3b82f6;          /* насыщенный голубой снизу */
+  --accent:      #60a5fa;          /* светло-голубой акцент */
   --accent-dark: #2563eb;
   --card-bg:     rgba(30, 58, 138, 0.65);
   --text:        #f0f9ff;
@@ -31,7 +34,10 @@ body {
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
-/* Шапка */
+/* ========================================= */
+/* Шапка                                     */
+/* ========================================= */
+
 .header {
   position: fixed;
   top: 0;
@@ -62,7 +68,10 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* Контент */
+/* ========================================= */
+/* Основной контент                          */
+/* ========================================= */
+
 .main-content {
   padding-top: calc(72px + env(safe-area-inset-top));
   padding-left: 16px;
@@ -72,94 +81,179 @@ body {
   max-width: 480px;
 }
 
-/* Список приложений */
+/* ========================================= */
+/* Список приложений                         */
+/* ========================================= */
+
 .app-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   padding: 20px 0;
 }
 
 .loading {
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
   color: var(--text-sec);
   font-size: 17px;
 }
 
-/* Карточка */
-.app-card {
+/* ========================================= */
+/* Минималистичная карточка                  */
+/* ========================================= */
+
+.app-card.minimal {
   background: var(--card-bg);
   backdrop-filter: var(--blur);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   box-shadow: var(--shadow);
   transition: var(--transition);
   border: 1px solid var(--border);
 }
 
-.app-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+.app-card.minimal:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
 }
 
 .app-header {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 16px;
+  flex: 1;
 }
 
 .app-icon {
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   border-radius: 16px;
   object-fit: cover;
   background: #334155;
 }
 
-.app-info {
-  flex: 1;
-}
-
 .app-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
-  margin-bottom: 4px;
+  line-height: 1.3;
 }
 
-.app-category {
-  font-size: 13px;
-  color: var(--text-sec);
-  margin-bottom: 4px;
-}
-
-.app-features {
-  font-size: 14px;
+.btn-open {
+  background: rgba(96, 165, 250, 0.18);
   color: var(--accent);
-  font-weight: 500;
-}
-
-.btn-install {
-  display: block;
-  background: var(--accent);
-  color: #0f172a;
-  text-align: center;
-  padding: 10px 0;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  padding: 8px 16px;
   border-radius: 12px;
   font-weight: 600;
   font-size: 15px;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-open:hover {
+  background: rgba(96, 165, 250, 0.28);
+  transform: translateY(-1px);
+}
+
+/* ========================================= */
+/* Модальное окно                            */
+/* ========================================= */
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  backdrop-filter: var(--blur);
+  border-radius: 24px;
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+  border: 1px solid var(--border);
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.close-modal {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 32px;
+  color: var(--text-sec);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.close-modal:hover {
+  color: var(--text);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.modal-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.modal h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.modal-body p {
+  font-size: 16px;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  color: var(--text-sec);
+}
+
+#modalDownloadBtn {
+  display: block;
+  width: 100%;
+  background: var(--accent);
+  color: #0f172a;
+  text-align: center;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 17px;
   text-decoration: none;
-  margin-top: 12px;
+  margin-top: 24px;
   transition: var(--transition);
 }
 
-.btn-install:hover {
+#modalDownloadBtn:hover {
   background: var(--accent-dark);
-  transform: scale(1.04);
+  transform: scale(1.02);
 }
 
-/* Нижняя панель */
+/* ========================================= */
+/* Нижняя навигация                          */
+/* ========================================= */
+
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -187,6 +281,7 @@ body {
   font-size: 10px;
   font-weight: 500;
   width: 25%;
+  transition: var(--transition);
 }
 
 .tab-item.active {
@@ -210,11 +305,19 @@ body {
   transition: var(--transition);
 }
 
-/* Адаптив */
+/* ========================================= */
+/* Адаптивность                              */
+/* ========================================= */
+
 @media (min-width: 768px) {
   .main-content {
     max-width: 720px;
     padding-left: 32px;
     padding-right: 32px;
+  }
+
+  .app-card.minimal {
+    max-width: 500px;
+    margin: 0 auto;
   }
 }
