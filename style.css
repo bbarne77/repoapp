@@ -1,4 +1,7 @@
-/* Reset + переменные */
+/* ========================================= */
+/* Reset и базовые переменные               */
+/* ========================================= */
+
 * {
   margin: 0;
   padding: 0;
@@ -6,17 +9,19 @@
 }
 
 :root {
-  --bg-start: #0f172a;          /* глубокий тёмно-синий сверху */
-  --bg-end:   #1e40af;          /* насыщенный синий-голубой снизу */
-  --accent:   #60a5fa;          /* светло-голубой для кнопок/акцентов */
-  --accent-dark: #3b82f6;
-  --card-bg:  rgba(30, 41, 59, 0.75);  /* полупрозрачные тёмные карточки */
-  --text:     #f1f5f9;          /* почти белый текст */
-  --text-sec: #cbd5e1;
-  --header-bg: rgba(15, 23, 42, 0.85); /* тёмная шапка */
-  --radius:   20px;
-  --blur:     blur(16px);
-  --shadow:   0 10px 30px rgba(0, 0, 0, 0.25);
+  --bg-start:    #0f1d3a;          /* тёмный синий сверху */
+  --bg-end:      #3b82f6;          /* насыщенный голубой снизу */
+  --accent:      #60a5fa;          /* светло-голубой для акцентов и кнопок */
+  --accent-dark: #2563eb;
+  --card-bg:     rgba(30, 58, 138, 0.65);   /* полупрозрачный тёмно-голубой */
+  --text:        #f0f9ff;          /* почти белый с лёгким голубым оттенком */
+  --text-sec:    #bfdbfe;          /* вторичный текст */
+  --header-bg:   rgba(15, 23, 55, 0.88);    /* тёмная шапка */
+  --border:      rgba(96, 165, 250, 0.18);
+  --radius:      20px;
+  --blur:        blur(16px);
+  --shadow:      0 10px 30px rgba(0, 0, 0, 0.3);
+  --transition:  all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 body {
@@ -29,7 +34,10 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Шапка — тёмная, с blur */
+/* ========================================= */
+/* Шапка (тёмная, по центру)                 */
+/* ========================================= */
+
 .header {
   position: fixed;
   top: 0;
@@ -41,7 +49,7 @@ body {
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
   background: var(--header-bg);
-  border-bottom: 1px solid rgba(96, 165, 250, 0.12);
+  border-bottom: 1px solid var(--border);
 }
 
 .header-content {
@@ -60,7 +68,10 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* Контент */
+/* ========================================= */
+/* Основной контент                          */
+/* ========================================= */
+
 .main-content {
   padding-top: calc(60px + env(safe-area-inset-top));
   padding-left: 16px;
@@ -70,7 +81,7 @@ body {
   max-width: 480px;
 }
 
-/* Hero-заглушка */
+/* Hero-заглушка (можно потом убрать или стилизовать лучше) */
 .placeholder-hero {
   text-align: center;
   padding: 80px 20px 60px;
@@ -80,14 +91,19 @@ body {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 12px;
+  line-height: 1.2;
 }
 
 .placeholder-hero p {
   font-size: 17px;
   color: var(--text-sec);
+  line-height: 1.4;
 }
 
-/* Пример карточки приложения */
+/* ========================================= */
+/* Карточка приложения (пример)              */
+/* ========================================= */
+
 .app-card {
   background: var(--card-bg);
   backdrop-filter: var(--blur);
@@ -95,10 +111,60 @@ body {
   padding: 16px;
   margin-bottom: 20px;
   box-shadow: var(--shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: var(--transition);
+  border: 1px solid var(--border);
 }
 
 .app-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Иконка приложения (круглая, как в App Store) */
+.app-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: #334155;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+/* Кнопка "Установить" в стиле iOS */
+.btn-install {
+  background: var(--accent);
+  color: #0f172a;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-install:hover {
+  background: var(--accent-dark);
+  transform: scale(1.04);
+}
+
+/* ========================================= */
+/* Адаптивность (хотя основной фокус — мобильный) */
+/* ========================================= */
+
+@media (min-width: 768px) {
+  .main-content {
+    max-width: 720px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  
+  .placeholder-hero {
+    padding-top: 120px;
+  }
+  
+  .app-card {
+    max-width: 360px;
+    margin: 0 auto 24px;
+  }
 }
