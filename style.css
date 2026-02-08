@@ -255,11 +255,10 @@ body {
   line-height: 1.2;
 }
 
-/* Компактный блок версии и размера — минималистичный */
+/* Компактный блок версии и размера — без контейнера, просто текст с иконками */
 .meta-block {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  gap: 16px;
   font-size: 13px;
   color: var(--text-sec);
 }
@@ -270,9 +269,9 @@ body {
   gap: 6px;
 }
 
-.meta-icon {
-  width: 16px;
-  height: 16px;
+.meta-item .meta-icon {
+  width: 14px;
+  height: 14px;
   stroke: var(--accent);
   flex-shrink: 0;
 }
