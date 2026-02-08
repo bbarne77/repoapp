@@ -252,13 +252,47 @@ body {
   margin: 16px 0 24px;
 }
 
-/* Блок функций */
+/* Инфо-грид */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 12px;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.info-label {
+  font-size: 13px;
+  color: var(--text-sec);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.info-value:empty {
+  color: var(--text-sec);
+  font-style: italic;
+}
+
+/* Блок функций (внутри info-grid) */
 .features-block {
   background: rgba(96, 165, 250, 0.10);
   backdrop-filter: blur(8px);
   border-radius: 12px;
   padding: 14px 16px;
-  margin-bottom: 20px;
   border: 1px solid rgba(96, 165, 250, 0.25);
 }
 
