@@ -21,7 +21,7 @@
   </header>
 
   <main class="main-content">
-    <!-- Поисковая строка (показывается только на вкладке Search) -->
+    <!-- Поисковая строка (только для вкладки Search) -->
     <div id="searchContainer" class="search-container" style="display: none;">
       <input type="text" id="searchInput" placeholder="Поиск по названию..." class="search-input">
     </div>
@@ -40,9 +40,22 @@
         <h2 id="modalTitle"></h2>
       </div>
       <div class="modal-body">
-        <!-- Блок функций -->
-        <div class="features-block">
-          <p id="modalFeatures"></p>
+        <!-- Инфо-грид -->
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Версия</span>
+            <span id="modalVersion" class="info-value"></span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Размер</span>
+            <span id="modalSize" class="info-value"></span>
+          </div>
+          <div class="info-item full-width">
+            <span class="info-label">Функции</span>
+            <div class="features-block">
+              <p id="modalFeatures"></p>
+            </div>
+          </div>
         </div>
 
         <!-- Предупреждение о сертификате -->
