@@ -20,7 +20,7 @@
   --transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Фиксы для iOS/Safari — предотвращаем белый экран */
+/* Фиксы для iOS/Safari */
 body {
   font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
   background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
@@ -38,7 +38,7 @@ body {
   backface-visibility: hidden;
 }
 
-/* Слой 1 — плотные мелкие и средние звёзды */
+/* Слой звёзд 1 */
 body::before {
   content: "";
   position: fixed;
@@ -66,7 +66,7 @@ body::before {
   transform: translateZ(0);
 }
 
-/* Слой 2 — ещё более мелкие звёзды, другой масштаб */
+/* Слой звёзд 2 */
 body::after {
   content: "";
   position: fixed;
@@ -97,7 +97,7 @@ body::after {
   to   { background-position: -360px -360px; }
 }
 
-/* Мерцание отдельных ярких звёзд — разная яркость и скорость */
+/* Мерцание отдельных звёзд */
 .stars-twinkle {
   position: fixed;
   inset: 0;
@@ -132,57 +132,77 @@ body::after {
   75%      { opacity: 0.92; transform: scale(1.006); }
 }
 
-/* Падающие звёзды — заметнее, с хвостом и свечением */
+/* Падающая звезда — теперь выглядит как настоящая звезда с хвостом и свечением */
 .shooting-star {
   position: fixed;
-  top: -30%;
-  left: -30%;
-  width: 200px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent 0%, rgba(200,230,255,0.95) 30%, #a0d0ff 50%, #60a5fa 70%, transparent 100%);
-  box-shadow: 0 0 18px rgba(96, 165, 250, 0.7), 0 0 40px rgba(96, 165, 250, 0.3);
-  transform: rotate(34deg);
-  opacity: 0;
+  inset: 0;
   pointer-events: none;
   z-index: -1;
+  opacity: 0;
   animation: shoot 15s linear infinite;
-  will-change: transform, opacity;
+  will-change: opacity, transform;
 }
 
-.shooting-star:nth-child(2) {
-  animation-delay: 4s;
-  top: 8%;
-  transform: rotate(42deg);
-  width: 240px;
-  animation-duration: 18s;
+.shooting-star::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 
+    0 0 12px #fff,
+    0 0 24px #a0d0ff,
+    0 0 40px #60a5fa;
+  top: -2px;
+  left: -3px;
+  opacity: 0.95;
 }
 
-.shooting-star:nth-child(3) {
-  animation-delay: 9s;
-  transform: rotate(26deg);
-  width: 180px;
-  animation-duration: 16s;
+.shooting-star::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(160, 208, 255, 0.9) 20%,
+    rgba(96, 165, 250, 0.7) 50%,
+    rgba(96, 165, 250, 0.4) 70%,
+    transparent 100%
+  );
+  border-radius: 50% 0 0 50%;
+  filter: blur(2px);
+  transform: skewX(-15deg);
 }
 
-.shooting-star:nth-child(4) {
-  animation-delay: 13s;
-  top: 22%;
-  transform: rotate(18deg);
-  width: 210px;
-  animation-duration: 20s;
+.shooting-star {
+  --rotation: 34deg;
+  transform: rotate(var(--rotation)) translateX(0);
 }
+
+.shooting-star:nth-child(2) { --rotation: 42deg; animation-delay: 4s; animation-duration: 18s; }
+.shooting-star:nth-child(3) { --rotation: 26deg; animation-delay: 9s; animation-duration: 16s; }
+.shooting-star:nth-child(4) { --rotation: 18deg; animation-delay: 13s; animation-duration: 20s; }
 
 @keyframes shoot {
-  0%   { transform: translate(-160vw, -160vh) rotate(34deg); opacity: 0; }
-  1.5% { opacity: 0.95; }
-  5%   { opacity: 0.75; }
-  100% { transform: translate(260vw, 260vh) rotate(34deg); opacity: 0; }
+  0%   {
+    transform: rotate(var(--rotation)) translate(-180vw, -180vh);
+    opacity: 0;
+  }
+  1%   { opacity: 1; }
+  4%   { opacity: 0.95; }
+  8%   { opacity: 0.70; }
+  100% {
+    transform: rotate(var(--rotation)) translate(280vw, 280vh);
+    opacity: 0;
+  }
 }
 
-/* ────────────────────────────────────────────────
-   Основные стили приложения
-───────────────────────────────────────────────── */
-
+/* Остальные стили приложения остаются без изменений */
 .main-content {
   position: relative;
   z-index: 1;
@@ -540,7 +560,6 @@ body::after {
   transform: translateY(-1px);
 }
 
-/* Нижняя навигация */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -592,7 +611,6 @@ body::after {
   transition: var(--transition);
 }
 
-/* Адаптив */
 @media (min-width: 768px) {
   .main-content {
     max-width: 720px;
