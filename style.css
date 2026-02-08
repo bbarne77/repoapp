@@ -223,11 +223,27 @@ body {
   margin: 16px 0 24px;
 }
 
-.modal-body p {
-  font-size: 16px;
+/* Блок функций */
+.features-block {
+  background: rgba(96, 165, 250, 0.10);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(96, 165, 250, 0.25);
+}
+
+.features-block p {
+  font-size: 15px;
   line-height: 1.5;
-  color: var(--text-sec);
+  color: var(--text);
   margin: 0;
+}
+
+.features-block p:empty::before {
+  content: "Нет дополнительной информации";
+  color: var(--text-sec);
+  font-style: italic;
 }
 
 /* Предупреждение о сертификате */
@@ -236,7 +252,6 @@ body {
   backdrop-filter: blur(8px);
   border-radius: 12px;
   padding: 14px 16px;
-  margin: 20px 0;
   border: 1px solid rgba(255, 193, 7, 0.3);
   display: flex;
   align-items: flex-start;
