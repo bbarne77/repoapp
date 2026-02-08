@@ -40,7 +40,7 @@ function loadApps() {
         ...doc.data()
       }));
 
-      // По умолчанию показываем Apps
+      // По умолчанию показываем вкладку "Apps"
       renderApps('apps');
     })
     .catch(error => {
@@ -87,7 +87,6 @@ function openModal(appId) {
 
   document.getElementById('modalIcon').src = app.icon_url || 'https://via.placeholder.com/128?text=Icon';
   document.getElementById('modalTitle').textContent = app.название || 'Без названия';
-  document.getElementById('modalCategory').textContent = app.категория || '';
   document.getElementById('modalFeatures').textContent = app.функции || 'Нет дополнительной информации';
   document.getElementById('modalDownloadBtn').href = app.download_url || '#';
 
@@ -114,7 +113,6 @@ document.querySelectorAll('.tab-item').forEach(tab => {
   tab.addEventListener('click', e => {
     e.preventDefault();
 
-    // Активный таб
     document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
 
