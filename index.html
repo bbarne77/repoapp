@@ -27,83 +27,45 @@
     </div>
   </main>
 
+  <!-- Модальное окно -->
+  <div id="appModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <div class="modal-header">
+        <img id="modalIcon" src="" alt="Иконка" class="modal-icon">
+        <h2 id="modalTitle"></h2>
+      </div>
+      <div class="modal-body">
+        <p id="modalCategory"></p>
+        <p id="modalFeatures"></p>
+      </div>
+      <a id="modalDownloadBtn" href="#" class="btn-install" target="_blank" rel="noopener noreferrer">
+        Установить
+      </a>
+    </div>
+  </div>
+
   <!-- Нижняя навигация -->
   <nav class="bottom-nav">
-    <a href="#" class="tab-item active">
+    <a href="#" class="tab-item active" data-tab="apps">
       <img src="https://img.icons8.com/ios/50/ffffff/apps.png" alt="Apps" class="tab-icon">
       <span>Apps</span>
     </a>
-    <a href="#" class="tab-item">
+    <a href="#" class="tab-item" data-tab="games">
       <img src="https://img.icons8.com/ios/50/ffffff/game-controller.png" alt="Games" class="tab-icon">
       <span>Games</span>
     </a>
-    <a href="#" class="tab-item">
+    <a href="#" class="tab-item" data-tab="search">
       <img src="https://img.icons8.com/ios/50/ffffff/search--v1.png" alt="Search" class="tab-icon">
       <span>Search</span>
     </a>
-    <a href="#" class="tab-item">
+    <a href="#" class="tab-item" data-tab="info">
       <img src="https://img.icons8.com/ios/50/ffffff/info--v1.png" alt="Info" class="tab-icon">
       <span>Info</span>
     </a>
   </nav>
 
-  <script>
-    // ================== Firebase Config ==================
-    const firebaseConfig = {
-      apiKey: "AIzaSyB-Bx0qZ7nGN8Nn_DfUyVKuCfzmoNDnwjw",
-      authDomain: "ipaworld.firebaseapp.com",
-      projectId: "ipaworld",
-      storageBucket: "ipaworld.firebasestorage.app",
-      messagingSenderId: "456186416178",
-      appId: "1:456186416178:web:be65c6a6310d809234002b",
-      measurementId: "G-W5C64GL3X6"
-    };
-
-    // Инициализация
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // ================== Загрузка приложений ==================
-    const appList = document.getElementById('appList');
-    const loading = document.getElementById('loading');
-
-    db.collection('apps').get()
-      .then((querySnapshot) => {
-        loading.style.display = 'none';
-
-        if (querySnapshot.empty) {
-          appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Приложений пока нет</p>';
-          return;
-        }
-
-        querySnapshot.forEach((doc) => {
-          const app = doc.data();
-          const card = document.createElement('div');
-          card.className = 'app-card';
-
-          card.innerHTML = `
-            <div class="app-header">
-              <img src="${app.icon_url || 'https://via.placeholder.com/64?text=Icon'}" alt="${app.название || 'App'}" class="app-icon">
-              <div class="app-info">
-                <h3 class="app-title">${app.название || 'Без названия'}</h3>
-                <p class="app-category">${app.категория || 'Приложения'}</p>
-                <p class="app-features">${app.функции || '—'}</p>
-              </div>
-            </div>
-            <a href="${app.download_url || '#'}" class="btn-install" target="_blank" rel="noopener noreferrer">
-              Установить
-            </a>
-          `;
-
-          appList.appendChild(card);
-        });
-      })
-      .catch((error) => {
-        console.error("Ошибка Firestore:", error);
-        loading.innerHTML = 'Ошибка загрузки. Проверь консоль браузера.';
-        loading.style.color = '#ff6b6b';
-      });
-  </script>
-
+  <!-- Подключение всей логики -->
+  <script src="script.js"></script>
 </body>
 </html>
