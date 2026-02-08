@@ -1,7 +1,4 @@
-/* ========================================= */
-/* Reset + базовые переменные               */
-/* ========================================= */
-
+/* Reset + переменные */
 * {
   margin: 0;
   padding: 0;
@@ -9,101 +6,100 @@
 }
 
 :root {
-  --bg-primary: #0f0f17;
-  --bg-secondary: #14141f;
-  --accent: #5e5ce6;           /* синий как в iOS */
-  --accent-dark: #4a48b3;
-  --text-primary: #f5f5f7;
-  --text-secondary: #a1a1aa;
-  --card-bg: rgba(30, 30, 46, 0.65);
-  --border: rgba(255, 255, 255, 0.08);
-  --radius: 18px;
-  --transition: all 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --bg-start: #0d1b2a;          /* тёмно-синий */
+  --bg-end:   #1b263b;          /* чуть светлее, серо-синий */
+  --accent:   #60a5fa;          /* яркий голубой */
+  --accent-dark: #3b82f6;
+  --card-bg:  rgba(30, 41, 59, 0.75);
+  --text:     #f1f5f9;
+  --text-sec: #94a3b8;
+  --radius:   20px;
+  --blur:     blur(16px);
 }
 
 body {
   font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #0a0e1a 0%, #0f172a 100%);
-  color: var(--text-primary);
-  min-height: 100vh;
-  overflow-x: hidden;
+  background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
+  color: var(--text);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* ========================================= */
-/* Шапка                                     */
-/* ========================================= */
-
+/* Шапка — центр + blur + safe area */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background: rgba(15, 15, 23, 0.72);
-  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  height: calc(44px + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  background: rgba(13, 27, 42, 0.68);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
 }
 
-.container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 24px;
+.header-content {
+  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 68px;
+  justify-content: center;
 }
 
 .logo {
-  font-size: 28px;
-  font-weight: 700;
-  background: linear-gradient(90deg, #7c3aed, #5e5ce6, #3b82f6);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  color: var(--text);
+  background: linear-gradient(90deg, #93c5fd, #60a5fa, #3b82f6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: -0.5px;
 }
 
-.nav {
-  display: flex;
-  gap: 36px;
+/* Основной контент — отступ под шапку + safe areas */
+.main-content {
+  padding-top: calc(60px + env(safe-area-inset-top));
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: env(safe-area-inset-bottom);
+  max-width: 428px;               /* iPhone 14/15/16 Pro Max ширина */
+  margin: 0 auto;
 }
 
-.nav-link {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-  transition: var(--transition);
+/* Пока заглушка для hero */
+.placeholder-hero {
+  text-align: center;
+  padding: 60px 20px 40px;
 }
 
-.nav-link:hover,
-.nav-link.active {
-  color: var(--text-primary);
+.placeholder-hero h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
 }
 
-.btn-search {
-  background: rgba(94, 92, 230, 0.18);
-  color: var(--accent);
-  border: 1px solid rgba(94, 92, 230, 0.3);
-  padding: 8px 16px;
-  border-radius: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
+.placeholder-hero p {
+  font-size: 17px;
+  color: var(--text-sec);
 }
 
-.btn-search:hover {
-  background: rgba(94, 92, 230, 0.28);
-  transform: translateY(-1px);
-}
-
-/* Для мобильных — пока просто скрываем, потом сделаем бургер */
-@media (max-width: 768px) {
-  .nav, .btn-search {
-    display: none;
-  }
-  .logo {
-    font-size: 24px;
+/* Блокируем десктоп — если ширина > 500px → центрируем и ограничиваем */
+@media (min-width: 501px) {
+  body::before {
+    content: "Этот сайт оптимизирован только под iPhone / мобильные устройства iOS";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    z-index: 9999;
   }
 }
