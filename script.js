@@ -70,8 +70,7 @@ function renderList(category, searchQuery = '') {
     const query = searchQuery.toLowerCase();
     items = items.filter(item => {
       const name = (item.название || '').toLowerCase();
-      const features = (item.функции || '').toLowerCase();
-      return name.includes(query) || features.includes(query);
+      return name.includes(query);
     });
   }
 
@@ -139,9 +138,9 @@ document.querySelectorAll('.tab-item').forEach(tab => {
       renderList(tabType);
     } else if (tabType === 'search') {
       searchContainer.style.display = 'block';
-      searchInput.value = ''; // очищаем поле
+      searchInput.value = '';
       searchInput.focus();
-      appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Введите запрос для поиска...</p>'; // сообщение вместо карточек
+      appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Введите название для поиска...</p>';
     } else {
       searchContainer.style.display = 'none';
       appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Раздел в разработке</p>';
@@ -154,7 +153,7 @@ searchInput.addEventListener('input', () => {
   const query = searchInput.value.trim();
 
   if (query.length === 0) {
-    appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Введите запрос для поиска...</p>';
+    appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Введите название для поиска...</p>';
     return;
   }
 
@@ -168,8 +167,7 @@ function renderSearchResults(query) {
 
   const filtered = allItems.filter(item => {
     const name = (item.название || '').toLowerCase();
-    const features = (item.функции || '').toLowerCase();
-    return name.includes(query.toLowerCase()) || features.includes(query.toLowerCase());
+    return name.includes(query.toLowerCase());
   });
 
   if (filtered.length === 0) {
