@@ -121,19 +121,24 @@ body {
 }
 
 .tab-item.active .tab-icon {
-  color: var(--accent);
+  filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(180deg);
   transform: scale(1.15);
 }
 
+.tab-item:hover .tab-icon {
+  filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(180deg);
+}
+
 .tab-icon {
-  font-size: 24px;
+  width: 28px;
+  height: 28px;
   margin-bottom: 4px;
-  line-height: 1;
+  filter: brightness(0) invert(0.9);  /* светлые иконки по умолчанию */
   transition: var(--transition);
 }
 
 /* ========================================= */
-/* Адаптивность (на всякий случай)           */
+/* Адаптивность                              */
 /* ========================================= */
 
 @media (min-width: 768px) {
