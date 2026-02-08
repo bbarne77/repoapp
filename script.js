@@ -65,7 +65,7 @@ function renderList(category, searchQuery = '') {
 
   let items = category === 'apps' ? allApps : allGames;
 
-  // Фильтр по поиску
+  // Фильтр по поиску (если есть запрос)
   if (searchQuery) {
     const query = searchQuery.toLowerCase();
     items = items.filter(item => {
@@ -139,8 +139,9 @@ document.querySelectorAll('.tab-item').forEach(tab => {
       renderList(tabType);
     } else if (tabType === 'search') {
       searchContainer.style.display = 'block';
+      searchInput.value = ''; // очищаем поле
       searchInput.focus();
-      renderSearchResults(); // показываем все при открытии поиска
+      appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Введите запрос для поиска...</p>'; // сообщение вместо карточек
     } else {
       searchContainer.style.display = 'none';
       appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Раздел в разработке</p>';
@@ -148,13 +149,19 @@ document.querySelectorAll('.tab-item').forEach(tab => {
   });
 });
 
-// Поиск в реальном времени
+// Поиск в реальном времени — только если есть текст
 searchInput.addEventListener('input', () => {
-  renderSearchResults();
+  const query = searchInput.value.trim();
+
+  if (query.length === 0) {
+    appList.innerHTML = '<p style="text-align:center; color:#bfdbfe; padding:40px;">Введите запрос для поиска...</p>';
+    return;
+  }
+
+  renderSearchResults(query);
 });
 
-function renderSearchResults() {
-  const query = searchInput.value.trim();
+function renderSearchResults(query) {
   appList.innerHTML = '';
 
   const allItems = [...allApps, ...allGames];
