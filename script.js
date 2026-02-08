@@ -65,7 +65,6 @@ function renderList(category, searchQuery = '') {
 
   let items = category === 'apps' ? allApps : allGames;
 
-  // Фильтр по поиску (если есть запрос)
   if (searchQuery) {
     const query = searchQuery.toLowerCase();
     items = items.filter(item => {
@@ -107,10 +106,13 @@ function openModal(itemId, category) {
   document.getElementById('modalSize').textContent = item.размер || '—';
   document.getElementById('modalDownloadBtn').href = item.download_url || '#';
 
-  modal.classList.remove('closing');
+  // Показываем модалку и запускаем анимацию появления
   modal.style.display = 'flex';
-  // Даём браузеру отрисовать display, потом добавляем класс анимации
-  setTimeout(() => modal.classList.add('show'), 10);
+  modal.classList.remove('closing');
+  // Даём браузеру применить display, затем запускаем анимацию
+  requestAnimationFrame(() => {
+    modal.classList.add('show');
+  });
 }
 
 // ================== События ==================
@@ -123,21 +125,20 @@ appList.addEventListener('click', e => {
 });
 
 // Закрытие модалки с анимацией
-closeModalBtn.addEventListener('click', () => {
+function closeModalWithAnimation() {
   modal.classList.add('closing');
   setTimeout(() => {
     modal.style.display = 'none';
     modal.classList.remove('closing');
-  }, 400); // синхронно с длительностью анимации
-});
+    modal.classList.remove('show');
+  }, 500); // 500 мс — длительность анимации (transition)
+}
+
+closeModalBtn.addEventListener('click', closeModalWithAnimation);
 
 window.addEventListener('click', e => {
   if (e.target === modal) {
-    modal.classList.add('closing');
-    setTimeout(() => {
-      modal.style.display = 'none';
-      modal.classList.remove('closing');
-    }, 400);
+    closeModalWithAnimation();
   }
 });
 
@@ -167,7 +168,7 @@ document.querySelectorAll('.tab-item').forEach(tab => {
   });
 });
 
-// Поиск в реальном времени — только если есть текст
+// Поиск в реальном времени
 searchInput.addEventListener('input', () => {
   const query = searchInput.value.trim();
 
