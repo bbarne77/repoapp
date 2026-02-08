@@ -189,7 +189,7 @@ body {
   box-shadow: none;
 }
 
-/* Модальное окно — тёмный, спокойный стиль */
+/* Модальное окно — тёмный спокойный стиль */
 .modal {
   display: none;
   position: fixed;
@@ -255,24 +255,38 @@ body {
   line-height: 1.2;
 }
 
-/* Компактный блок версии и размера */
+/* Компактный блок версии и размера справа от иконки */
 .meta-block {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   font-size: 13px;
   color: var(--text-sec);
+  padding-top: 4px; /* выравнивание по центру иконки */
 }
 
 .meta-item {
   display: flex;
   align-items: center;
   gap: 8px;
+  background: rgba(96, 165, 250, 0.08);
+  backdrop-filter: blur(8px);
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.meta-icon {
+  width: 16px;
+  height: 16px;
+  stroke: var(--accent);
+  flex-shrink: 0;
 }
 
 .meta-label {
-  color: var(--text-sec);
   font-weight: 500;
+  color: var(--text-sec);
+  min-width: 50px;
 }
 
 .meta-value {
