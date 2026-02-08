@@ -9,9 +9,9 @@
 }
 
 :root {
-  --bg-start:    #0f1d3a;          /* тёмный синий сверху */
-  --bg-end:      #3b82f6;          /* насыщенный голубой снизу */
-  --accent:      #60a5fa;          /* светло-голубой акцент */
+  --bg-start:    #0f1d3a;
+  --bg-end:      #3b82f6;
+  --accent:      #60a5fa;
   --accent-dark: #2563eb;
   --card-bg:     rgba(30, 58, 138, 0.65);
   --text:        #f0f9ff;
@@ -34,10 +34,7 @@ body {
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
-/* ========================================= */
-/* Шапка                                     */
-/* ========================================= */
-
+/* Шапка */
 .header {
   position: fixed;
   top: 0;
@@ -68,10 +65,7 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* ========================================= */
-/* Основной контент                          */
-/* ========================================= */
-
+/* Контент */
 .main-content {
   padding-top: calc(72px + env(safe-area-inset-top));
   padding-left: 16px;
@@ -81,10 +75,7 @@ body {
   max-width: 480px;
 }
 
-/* ========================================= */
-/* Список приложений                         */
-/* ========================================= */
-
+/* Список приложений */
 .app-list {
   display: flex;
   flex-direction: column;
@@ -99,10 +90,7 @@ body {
   font-size: 17px;
 }
 
-/* ========================================= */
-/* Минималистичная карточка                  */
-/* ========================================= */
-
+/* Минималистичная карточка */
 .app-card.minimal {
   background: var(--card-bg);
   backdrop-filter: var(--blur);
@@ -161,10 +149,7 @@ body {
   transform: translateY(-1px);
 }
 
-/* ========================================= */
-/* Модальное окно                            */
-/* ========================================= */
-
+/* Модальное окно */
 .modal {
   display: none;
   position: fixed;
@@ -223,11 +208,15 @@ body {
   margin: 0;
 }
 
+.modal-body {
+  margin: 16px 0 24px;
+}
+
 .modal-body p {
   font-size: 16px;
-  line-height: 1.4;
-  margin-bottom: 12px;
+  line-height: 1.5;
   color: var(--text-sec);
+  margin: 0;
 }
 
 #modalDownloadBtn {
@@ -241,7 +230,6 @@ body {
   font-weight: 600;
   font-size: 17px;
   text-decoration: none;
-  margin-top: 24px;
   transition: var(--transition);
 }
 
@@ -250,10 +238,7 @@ body {
   transform: scale(1.02);
 }
 
-/* ========================================= */
-/* Нижняя навигация                          */
-/* ========================================= */
-
+/* Нижняя навигация */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -305,10 +290,7 @@ body {
   transition: var(--transition);
 }
 
-/* ========================================= */
-/* Адаптивность                              */
-/* ========================================= */
-
+/* Адаптив */
 @media (min-width: 768px) {
   .main-content {
     max-width: 720px;
