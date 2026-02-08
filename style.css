@@ -31,11 +31,11 @@ body {
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
 /* ========================================= */
-/* Шапка — теперь выше (56px + safe-area)    */
+/* Шапка — высота 56px + safe-area           */
 /* ========================================= */
 
 .header {
@@ -60,7 +60,7 @@ body {
 }
 
 .logo {
-  font-size: 21px;                 /* чуть увеличил шрифт под высоту */
+  font-size: 21px;
   font-weight: 700;
   letter-spacing: -0.5px;
   background: linear-gradient(90deg, #93c5fd, #60a5fa, #3b82f6);
@@ -69,87 +69,71 @@ body {
 }
 
 /* ========================================= */
-/* Основной контент — подвинули вниз         */
+/* Основной контент                          */
 /* ========================================= */
 
 .main-content {
-  padding-top: calc(72px + env(safe-area-inset-top));  /* 56px шапка + запас 16px */
+  padding-top: calc(72px + env(safe-area-inset-top));
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: 20px;
   margin: 0 auto;
   max-width: 480px;
 }
 
-/* Hero-заглушка */
-.placeholder-hero {
-  text-align: center;
-  padding: 80px 20px 60px;
-}
-
-.placeholder-hero h1 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 12px;
-  line-height: 1.2;
-}
-
-.placeholder-hero p {
-  font-size: 17px;
-  color: var(--text-sec);
-  line-height: 1.4;
-}
-
 /* ========================================= */
-/* Карточка приложения                       */
+/* Нижняя навигация (bottom tab bar)         */
 /* ========================================= */
 
-.app-card {
-  background: var(--card-bg);
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(60px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--header-bg);
   backdrop-filter: var(--blur);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow);
+  -webkit-backdrop-filter: var(--blur);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 100;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-sec);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
   transition: var(--transition);
-  border: 1px solid var(--border);
+  width: 25%;
 }
 
-.app-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+.tab-item.active {
+  color: var(--accent);
 }
 
-/* Иконка приложения */
-.app-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  background: #334155;
-  margin-bottom: 12px;
-  overflow: hidden;
+.tab-item.active .tab-icon {
+  color: var(--accent);
+  transform: scale(1.15);
 }
 
-/* Кнопка "Установить" */
-.btn-install {
-  background: var(--accent);
-  color: #0f172a;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
+.tab-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+  line-height: 1;
   transition: var(--transition);
-}
-
-.btn-install:hover {
-  background: var(--accent-dark);
-  transform: scale(1.04);
 }
 
 /* ========================================= */
-/* Адаптивность                              */
+/* Адаптивность (на всякий случай)           */
 /* ========================================= */
 
 @media (min-width: 768px) {
@@ -157,14 +141,5 @@ body {
     max-width: 720px;
     padding-left: 32px;
     padding-right: 32px;
-  }
-  
-  .placeholder-hero {
-    padding-top: 120px;
-  }
-  
-  .app-card {
-    max-width: 360px;
-    margin: 0 auto 24px;
   }
 }
