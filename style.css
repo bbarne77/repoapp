@@ -232,7 +232,7 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 12px; /* уменьшили отступ под названием */
 }
 
 .modal-icon {
@@ -248,43 +248,35 @@ body {
   margin: 0;
 }
 
-.modal-body {
-  margin: 16px 0 24px;
-}
-
-/* Инфо-грид */
-.info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px 12px;
+/* Аккуратный блок с версией и размером */
+.meta-block {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 12px 16px;
   margin-bottom: 20px;
-}
-
-.info-item {
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.info-item.full-width {
-  grid-column: 1 / -1;
+.meta-item {
+  flex: 1;
+  text-align: center;
 }
 
-.info-label {
-  font-size: 13px;
+.meta-label {
+  font-size: 12px;
   color: var(--text-sec);
+  display: block;
   margin-bottom: 4px;
-  font-weight: 500;
 }
 
-.info-value {
+.meta-value {
   font-size: 15px;
+  font-weight: 600;
   color: var(--text);
-  line-height: 1.4;
-}
-
-.info-value:empty {
-  color: var(--text-sec);
-  font-style: italic;
 }
 
 /* Блок функций */
@@ -294,6 +286,7 @@ body {
   border-radius: 12px;
   padding: 14px 16px;
   border: 1px solid rgba(96, 165, 250, 0.25);
+  margin-bottom: 20px;
 }
 
 .features-block p {
@@ -319,6 +312,7 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 12px;
+  margin-bottom: 24px;
 }
 
 .warning-icon {
