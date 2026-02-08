@@ -34,10 +34,7 @@ body {
   padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
-/* ========================================= */
-/* Шапка                                     */
-/* ========================================= */
-
+/* Шапка */
 .header {
   position: fixed;
   top: 0;
@@ -68,10 +65,7 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* ========================================= */
-/* Основной контент                          */
-/* ========================================= */
-
+/* Контент */
 .main-content {
   padding-top: calc(72px + env(safe-area-inset-top));
   padding-left: 16px;
@@ -81,10 +75,7 @@ body {
   max-width: 480px;
 }
 
-/* ========================================= */
-/* Список приложений + загрузка              */
-/* ========================================= */
-
+/* Список приложений */
 .app-list {
   display: flex;
   flex-direction: column;
@@ -99,10 +90,7 @@ body {
   font-size: 17px;
 }
 
-/* ========================================= */
-/* Минималистичная карточка                  */
-/* ========================================= */
-
+/* Минималистичная карточка */
 .app-card.minimal {
   background: var(--card-bg);
   backdrop-filter: var(--blur);
@@ -172,10 +160,7 @@ body {
   box-shadow: none;
 }
 
-/* ========================================= */
-/* Модальное окно                            */
-/* ========================================= */
-
+/* Модальное окно */
 .modal {
   display: none;
   position: fixed;
@@ -245,6 +230,40 @@ body {
   margin: 0;
 }
 
+/* Предупреждение о сертификате */
+.cert-warning {
+  background: rgba(255, 193, 7, 0.12);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 20px 0;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.warning-icon {
+  font-size: 24px;
+  line-height: 1;
+  color: #ffc107;
+  flex-shrink: 0;
+}
+
+.warning-text p {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-sec);
+  margin: 4px 0;
+}
+
+/* Кнопки в модалке */
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 #modalDownloadBtn {
   display: block;
   width: 100%;
@@ -264,10 +283,27 @@ body {
   transform: scale(1.02);
 }
 
-/* ========================================= */
-/* Нижняя навигация                          */
-/* ========================================= */
+.btn-buy-cert {
+  display: block;
+  width: 100%;
+  background: rgba(96, 165, 250, 0.15);
+  color: var(--accent);
+  text-align: center;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  transition: var(--transition);
+}
 
+.btn-buy-cert:hover {
+  background: rgba(96, 165, 250, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Нижняя навигация */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -319,10 +355,7 @@ body {
   transition: var(--transition);
 }
 
-/* ========================================= */
-/* Адаптивность                              */
-/* ========================================= */
-
+/* Адаптив */
 @media (min-width: 768px) {
   .main-content {
     max-width: 720px;
