@@ -5,14 +5,14 @@
 }
 
 :root {
-  --bg-start: #0f2545;          /* светлее и голубее начало */
-  --bg-end:   #3a7cff;          /* яркий голубой конец градиента */
+  --bg-start: #0f2545;
+  --bg-end:   #3a7cff;
   --accent:   #60a5fa;
   --accent-dark: #2563eb;
-  --card-bg:  rgba(30, 58, 138, 0.45);  /* чуть прозрачнее, чтобы фон просвечивал */
+  --card-bg:  rgba(30, 58, 138, 0.45);
   --text:     #f0f9ff;
   --text-sec: #bfdbfe;
-  --header-bg: rgba(10, 20, 45, 0.92);  /* тёмная шапка */
+  --header-bg: rgba(10, 20, 45, 0.92);
   --border:   rgba(96, 165, 250, 0.22);
   --radius:   20px;
   --blur:     blur(16px);
@@ -37,7 +37,7 @@ body {
   backface-visibility: hidden;
 }
 
-/* Слой звёзд 1 — оставляем, но менее плотный и яркий */
+/* Слой звёзд 1 — крупнее и ярче */
 body::before {
   content: "";
   position: fixed;
@@ -46,20 +46,24 @@ body::before {
   z-index: -2;
 
   background:
-    radial-gradient(1.0px 1.0px at 10% 15%, #fff 30%, transparent 70%),
-    radial-gradient(0.8px 0.8px at 30% 40%, #eee 35%, transparent 70%),
-    radial-gradient(1.2px 1.2px at 50% 60%, #fff 25%, transparent 70%),
-    radial-gradient(0.9px 0.9px at 70% 25%, #ddd 40%, transparent 70%),
-    radial-gradient(1.1px 1.1px at 85% 75%, #eee 30%, transparent 70%);
+    radial-gradient(2.0px 2.0px at 10% 15%, #fff 45%, transparent 70%),
+    radial-gradient(1.8px 1.8px at 30% 40%, #eee 50%, transparent 70%),
+    radial-gradient(2.4px 2.4px at 50% 60%, #fff 40%, transparent 70%),
+    radial-gradient(1.6px 1.6px at 70% 25%, #ddd 55%, transparent 70%),
+    radial-gradient(2.2px 2.2px at 85% 75%, #eee 45%, transparent 70%),
+    radial-gradient(1.9px 1.9px at 5% 90%, #fff 50%, transparent 70%),
+    radial-gradient(2.1px 2.1px at 40% 5%, #eee 45%, transparent 70%);
   background-repeat: repeat;
-  background-size: 300px 300px;
-  opacity: 0.55;  /* сильно уменьшена яркость, чтобы не перебивать голубой фон */
+  background-size: 280px 280px;
+  opacity: 0.72;  /* ярче, но не перебор */
 
-  animation: drift-bg 200s linear infinite;
+  animation: drift-bg 180s linear infinite;
   will-change: background-position;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
-/* Слой звёзд 2 — ещё легче */
+/* Слой звёзд 2 — тоже крупнее */
 body::after {
   content: "";
   position: fixed;
@@ -68,16 +72,19 @@ body::after {
   z-index: -2;
 
   background:
-    radial-gradient(0.7px 0.7px at 20% 30%, #fff 40%, transparent 70%),
-    radial-gradient(0.6px 0.6px at 40% 70%, #eee 35%, transparent 70%),
-    radial-gradient(0.8px 0.8px at 60% 10%, #ddd 40%, transparent 70%),
-    radial-gradient(0.5px 0.5px at 80% 80%, #fff 45%, transparent 70%);
+    radial-gradient(1.5px 1.5px at 20% 30%, #fff 55%, transparent 70%),
+    radial-gradient(1.7px 1.7px at 40% 70%, #eee 50%, transparent 70%),
+    radial-gradient(1.3px 1.3px at 60% 10%, #ddd 55%, transparent 70%),
+    radial-gradient(1.8px 1.8px at 80% 80%, #fff 50%, transparent 70%),
+    radial-gradient(1.4px 1.4px at 95% 5%, #eee 45%, transparent 70%);
   background-repeat: repeat;
-  background-size: 220px 220px;
-  opacity: 0.40;
+  background-size: 200px 200px;
+  opacity: 0.58;
 
-  animation: drift-bg 280s linear infinite reverse;
+  animation: drift-bg 240s linear infinite reverse;
   will-change: background-position;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 @keyframes drift-bg {
@@ -85,7 +92,7 @@ body::after {
   to   { background-position: -360px -360px; }
 }
 
-/* Мерцание отдельных звёзд — оставляем, но ослабляем */
+/* Мерцание — чуть сильнее, чтобы звёзды "оживали" */
 .stars-twinkle {
   position: fixed;
   inset: 0;
@@ -93,28 +100,34 @@ body::after {
   z-index: -1;
 
   box-shadow:
-    90px  130px 0.8px #fff,
-   150px  310px 1.0px #eee,
-   230px   65px 0.7px #ddd,
-   320px  200px 0.9px #fff,
-   400px   85px 1.0px #eee,
-   490px  350px 0.8px #fff,
-   600px  140px 0.7px #ddd,
-   690px  280px 1.1px #eee,
-   820px   55px 0.6px #fff,
-   900px  400px 0.9px #ddd;
-  opacity: 0.65;  /* сильно снижено, чтобы не отвлекало от голубого фона */
-  animation: twinkle 12s ease-in-out infinite alternate;
-  will-change: opacity;
+    80px  120px 1.2px #fff,
+   140px  300px 1.5px #eee,
+   220px   60px 1.0px #ddd,
+   310px  190px 1.3px #fff,
+   390px   80px 1.4px #eee,
+   480px  340px 1.1px #fff,
+   590px  130px 0.9px #ddd,
+   680px  270px 1.6px #eee,
+   810px   50px 0.8px #fff,
+   890px  390px 1.3px #ddd,
+   150px  220px 1.5px #eee,
+   340px  410px 1.0px #fff,
+   520px  180px 1.2px #eee,
+   670px  450px 0.9px #fff;
+  opacity: 0.78;
+  animation: twinkle 9s ease-in-out infinite alternate;
+  will-change: opacity, transform;
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0.45; }
-  50%      { opacity: 0.75; }
+  0%, 100% { opacity: 0.50; transform: scale(1); }
+  30%      { opacity: 0.95; transform: scale(1.012); }
+  60%      { opacity: 0.70; transform: scale(1.004); }
+  90%      { opacity: 0.88; transform: scale(1.008); }
 }
 
 /* ────────────────────────────────────────────────
-   Основные стили приложения
+   Остальные стили приложения (без изменений)
 ───────────────────────────────────────────────── */
 
 .main-content {
@@ -138,7 +151,7 @@ body::after {
   padding-top: env(safe-area-inset-top);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);
-  background: var(--header-bg);  /* тёмная шапка */
+  background: var(--header-bg);
   border-bottom: 1px solid var(--border);
 }
 
@@ -153,10 +166,9 @@ body::after {
   font-size: 21px;
   font-weight: 700;
   letter-spacing: -0.5px;
-  color: #e0f2fe;  /* светлый текст вместо градиента, чтобы лучше читалось на тёмном фоне */
+  color: #e0f2fe;
 }
 
-/* Поиск */
 .search-container {
   margin-bottom: 20px;
   padding: 8px 0;
@@ -185,7 +197,6 @@ body::after {
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* Список карточек */
 .app-list {
   display: flex;
   flex-direction: column;
@@ -474,7 +485,6 @@ body::after {
   transform: translateY(-1px);
 }
 
-/* Нижняя навигация */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -526,7 +536,6 @@ body::after {
   transition: var(--transition);
 }
 
-/* Адаптив */
 @media (min-width: 768px) {
   .main-content {
     max-width: 720px;
